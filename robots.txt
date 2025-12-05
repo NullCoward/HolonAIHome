@@ -1,0 +1,7 @@
+# robots.txt for holonic.org
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://holonic.org/sitemap.xml
