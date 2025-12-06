@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m http.server:*)",
+      "Bash(cat:*)",
+      "Bash(python3:*)",
+      "Bash(tasklist:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:wiki-holon.vercel.app)",
+      "WebFetch(domain:wikiholon.vercel.app)",
+      "Bash(git rev-parse:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh repo create:*)",
+      "WebFetch(domain:lookup.icann.org)",
+      "WebFetch(domain:instantdomainsearch.com)",
+      "Bash(nslookup:*)",
+      "Bash(for domain in holonai.io holonai.ai holonai.dev holonai.app holonai.org holonai.net holon-ai.com holon-ai.io holon-ai.dev theholonai.com getholonai.com holonai.tech holonai.co)",
+      "Bash(do echo -n '$domain: ')",
+      "Bash(done)",
+      "Bash(vercel whoami:*)",
+      "Bash(npx --version:*)",
+      "Bash(npx vercel)",
+      "Bash(npx vercel login)",
+      "Bash(npx vercel --yes)",
+      "Bash(npx vercel:*)",
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(npm install:*)",
+      "Bash(node capture-og.js:*)",
+      "Bash(git push)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
