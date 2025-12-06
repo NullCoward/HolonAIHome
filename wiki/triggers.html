@@ -25,7 +25,89 @@
         .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0 5rem 0; position: fixed; height: 100vh; overflow-y: auto; backdrop-filter: blur(20px); }
         .sidebar-header { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; }
         .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
-        .sidebar-logo-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--foam-1), var(--foam-2)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--bg-void); }
+                .sidebar-logo-icon {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, rgba(20, 20, 30, 0.95), rgba(8, 8, 15, 0.98));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow:
+                inset 0 1px 2px rgba(255, 255, 255, 0.1),
+                inset 0 -1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar-logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                var(--foam-1),
+                var(--foam-2),
+                var(--foam-3),
+                var(--foam-4),
+                var(--foam-1)
+            );
+            filter: blur(8px);
+            opacity: 0.8;
+            z-index: -1;
+            animation: logoGlowSpin 8s linear infinite;
+        }
+
+        .sidebar-logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(150deg, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .sidebar-logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        @keyframes logoGlowSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 10, 15, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--foam-2), var(--foam-3));
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--foam-1), var(--foam-2));
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--foam-2) rgba(10, 10, 15, 0.5);
+        }
+
         .sidebar-logo-text { font-size: 1.1rem; font-weight: 600; }
         .sidebar-tagline { margin-top: 0.5rem; font-size: 0.8rem; color: var(--foam-2); font-style: italic; }
         .nav-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; }
@@ -68,7 +150,7 @@
         <nav class="sidebar">
             <div class="sidebar-header">
                 <a href="/wiki/" class="sidebar-logo">
-                    <div class="sidebar-logo-icon">H</div>
+                    <div class="sidebar-logo-icon"><img src="/HolonAI.png" alt="Holonic"></div>
                     <span class="sidebar-logo-text">HolonicEngine</span>
                 </a>
                 <div class="sidebar-tagline">Agents with Agency</div>
