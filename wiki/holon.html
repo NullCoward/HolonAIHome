@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is a Holon? - HolonicEngine Wiki</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <meta name="theme-color" content="#0a0a0f">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-void: #0a0a0f;
+            --bg-surface: rgba(15, 15, 25, 0.8);
+            --bg-elevated: rgba(20, 20, 35, 0.9);
+            --foam-1: #00ffcc;
+            --foam-2: #00d4ff;
+            --foam-3: #4488ff;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 212, 255, 0.3);
+        }
+        body {
+            background: var(--bg-void);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        .void-bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(0, 100, 150, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(0, 150, 100, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%);
+            z-index: 0;
+        }
+        .wiki-container { position: relative; z-index: 10; display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 280px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+        }
+        .sidebar-header { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; }
+        .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
+        .sidebar-logo-icon {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--foam-1), var(--foam-2));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.1rem; color: var(--bg-void);
+        }
+        .sidebar-logo-text { font-size: 1.1rem; font-weight: 600; }
+        .sidebar-tagline { margin-top: 0.5rem; font-size: 0.8rem; color: var(--foam-2); font-style: italic; }
+        .nav-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; }
+        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: all 0.2s; border-left: 2px solid transparent; }
+        .nav-link:hover { color: var(--text-primary); background: rgba(0, 212, 255, 0.05); border-left-color: var(--foam-2); }
+        .nav-link.active { color: var(--foam-2); background: rgba(0, 212, 255, 0.08); border-left-color: var(--foam-2); }
+        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); margin-top: auto; position: absolute; bottom: 0; left: 0; right: 0; background: var(--bg-surface); }
+        .back-link:hover { color: var(--text-secondary); }
+        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem; max-width: 900px; }
+        h1 { font-size: 2.5rem; font-weight: 300; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .page-subtitle { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        h2 { font-size: 1.5rem; font-weight: 500; margin: 2.5rem 0 1rem; color: var(--text-primary); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-subtle); }
+        h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--foam-1); }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        strong { color: var(--text-primary); font-weight: 600; }
+        ul, ol { margin: 1rem 0; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+        li strong { color: var(--foam-1); }
+        pre { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.5; }
+        code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; color: var(--foam-2); }
+        pre code { color: var(--text-secondary); }
+        blockquote { border-left: 3px solid var(--foam-2); padding: 1rem 1.5rem; margin: 1.5rem 0; background: rgba(0, 212, 255, 0.05); border-radius: 0 8px 8px 0; }
+        blockquote p { margin: 0; color: var(--text-primary); font-size: 1.1rem; font-style: italic; }
+        .content a { color: var(--foam-2); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+        .content a:hover { border-bottom-color: var(--foam-2); }
+        .diagram { background: var(--bg-elevated); border: 1px solid var(--border-glow); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; font-family: 'SF Mono', monospace; font-size: 0.8rem; white-space: pre; overflow-x: auto; }
+        hr { border: none; border-top: 1px solid var(--border-subtle); margin: 2rem 0; }
+        @media (max-width: 900px) {
+            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+            .main-content { margin-left: 0; padding: 2rem 1.5rem; }
+            .back-link { position: relative; }
+        }
+    </style>
+</head>
+<body>
+    <div class="void-bg"></div>
+    <div class="wiki-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <a href="/wiki/" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">H</div>
+                    <span class="sidebar-logo-text">HolonicEngine</span>
+                </a>
+                <div class="sidebar-tagline">Agents with Agency</div>
+            </div>
+            <div class="nav-section">Core Concepts</div>
+            <a href="/wiki/" class="nav-link">Overview</a>
+            <a href="/wiki/holon.html" class="nav-link active">What is a Holon?</a>
+            <a href="/wiki/architecture.html" class="nav-link">Architecture</a>
+            <a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
+            <div class="nav-section">Systems</div>
+            <a href="/wiki/heartbeat.html" class="nav-link">Heartbeat System</a>
+            <a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
+            <a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
+            <div class="nav-section">Vision</div>
+            <a href="/wiki/creativity.html" class="nav-link">Cross-Domain Creativity</a>
+            <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
+            <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
+        </nav>
+
+        <main class="main-content content">
+            <h1>What is a Holon?</h1>
+            <p class="page-subtitle">A portable AI context capsule &mdash; the fundamental building block of the HolonicEngine.</p>
+
+            <h2>The Core Metaphor</h2>
+            <blockquote><p>AI sitting on top of code like a body.</p></blockquote>
+            <p>The AI model (Claude, GPT, etc.) is a reasoning engine. The Holon is the body it wears:</p>
+            <ul>
+                <li>The body has capabilities (<strong>Actions</strong>)</li>
+                <li>The body has a current state (<strong>Self</strong>)</li>
+                <li>The body has an identity and purpose (<strong>Purpose</strong>)</li>
+            </ul>
+            <p>The model is stateless. The Holon provides everything else.</p>
+
+            <h2>The Three Components</h2>
+            <p>Every Holon has three integrated modules:</p>
+
+            <div class="diagram">┌─────────────────────────────────────────────┐
+│                   HOLON                     │
+├─────────────────────────────────────────────┤
+│  PURPOSE                                    │
+│  ─────────────────────────────────────────  │
+│  • Who am I?                                │
+│  • What are my goals?                       │
+│  • How should I behave?                     │
+│  • What constraints do I have?              │
+├─────────────────────────────────────────────┤
+│  SELF (State)                               │
+│  ─────────────────────────────────────────  │
+│  • What do I currently know?                │
+│  • What's my memory?                        │
+│  • What child holons do I contain?          │
+│  • What's my current context?               │
+├─────────────────────────────────────────────┤
+│  ACTIONS                                    │
+│  ─────────────────────────────────────────  │
+│  • What can I do?                           │
+│  • Callback functions to real code          │
+│  • Interface to external world              │
+└─────────────────────────────────────────────┘</div>
+
+            <h3>Purpose (The Interpretive Lens)</h3>
+            <p><strong>HOW to interpret everything.</strong></p>
+            <ul>
+                <li>Behavioral goals and constraints</li>
+                <li>Personality and communication style</li>
+                <li>Heuristics and priorities</li>
+                <li>Model-routing guidance (which AI to use for what)</li>
+            </ul>
+            <p>This is like a system prompt, but structured and part of the object.</p>
+
+            <h3>Self / State (The Current Context)</h3>
+            <p><strong>WHAT to interpret.</strong></p>
+            <ul>
+                <li>Dynamic values that change over time</li>
+                <li>Memory and knowledge</li>
+                <li>Historical logs and action history</li>
+                <li>Nested child holons</li>
+                <li>Arbitrary data bindings</li>
+            </ul>
+            <p>This is the Holon's "working memory" plus persistent storage.</p>
+
+            <h3>Actions (The Capabilities)</h3>
+            <p><strong>WHAT can be done.</strong></p>
+            <ul>
+                <li>Callable functions with structured parameters</li>
+                <li>Each action has a name, description, and implementation</li>
+                <li>Actions can modify the Holon's Self</li>
+                <li>Actions can spawn or modify other Holons</li>
+                <li>Actions connect to external APIs and systems</li>
+            </ul>
+
+            <h2>How It Works</h2>
+            <ol>
+                <li><strong>Serialization</strong>: The Holon converts itself to JSON/text</li>
+                <li><strong>AI Call</strong>: The serialized Holon is sent to the AI model</li>
+                <li><strong>Response</strong>: The AI returns structured action requests</li>
+                <li><strong>Dispatch</strong>: The engine executes the requested actions</li>
+                <li><strong>State Update</strong>: Actions modify the Holon's state</li>
+                <li><strong>Repeat</strong>: On next heartbeat, the cycle continues</li>
+            </ol>
+
+<pre><code># Simplified execution loop
+holon_json = holon.serialize()
+ai_response = llm.call(holon_json + user_message)
+actions = parse_actions(ai_response)
+for action in actions:
+    holon.dispatch(action.name, **action.params)</code></pre>
+
+            <h2>Key Properties</h2>
+
+            <h3>Portable</h3>
+            <p>Holons are just data. They can be:</p>
+            <ul>
+                <li>Saved to disk</li>
+                <li>Sent over a network</li>
+                <li>Stored in any database</li>
+                <li>Moved between systems</li>
+            </ul>
+            <p>The AI model is stateless. The Holon carries all context.</p>
+
+            <h3>Composable</h3>
+            <p>Holons can contain other Holons. A Holon's Self can include:</p>
+            <ul>
+                <li>Child holons for sub-tasks</li>
+                <li>Specialist holons for different domains</li>
+                <li>Memory holons for different contexts</li>
+            </ul>
+            <p>This creates a <strong>lattice</strong> structure, not just a flat list.</p>
+
+            <h3>Responsive</h3>
+            <p>Holons aren't just data stores &mdash; they're <strong>conversational</strong>.</p>
+            <p>You can query a Holon:</p>
+<pre><code>Me: "Hey PatentHolon, what's the current status?"
+PatentHolon: "Provisional filed. Utility filing due in 10 months.
+              Pranay quoted $8k. Waiting on your decision."</code></pre>
+            <p>This is like internal dialogue &mdash; consulting parts of your own mind.</p>
+
+            <h3>Self-Aware</h3>
+            <p>Each Holon knows:</p>
+            <ul>
+                <li>Its current token count</li>
+                <li>Its token budget/limit</li>
+                <li>Its usage patterns over time</li>
+            </ul>
+            <p>It can make decisions based on resource constraints.</p>
+
+            <h2>Example</h2>
+<pre><code>from holonic_engine import Holon
+
+# Create a holon
+assistant = Holon(name="Assistant")
+
+# Add purpose
+assistant.add_purpose("You are a helpful research assistant")
+assistant.add_purpose("Always cite sources")
+assistant.add_purpose("Be concise")
+
+# Add state
+assistant.add_self({"topic": "HolonicEngine patent strategy"})
+assistant.add_self({"memories": []})
+
+# Add actions
+@assistant.action
+def remember(key: str, value: str):
+    """Store something in memory."""
+    assistant.self_state.memories.append({key: value})
+
+@assistant.action
+def spawn_researcher(topic: str):
+    """Create a specialist holon for a research topic."""
+    child = Holon(name=f"Researcher_{topic}")
+    child.add_purpose(f"Research everything about {topic}")
+    assistant.add_self(child, key=f"researcher_{topic}")
+    return child
+
+# Execute
+result = assistant.execute("What should I research first?")</code></pre>
+
+            <h2>The Name "Holon"</h2>
+            <p>The term comes from Arthur Koestler's 1967 book <em>The Ghost in the Machine</em>.</p>
+            <p>A holon is something that is simultaneously:</p>
+            <ul>
+                <li>A <strong>whole</strong> unto itself</li>
+                <li>A <strong>part</strong> of a larger system</li>
+            </ul>
+            <p>This captures the recursive, composable nature of the architecture:</p>
+            <ul>
+                <li>Each Holon is complete and functional on its own</li>
+                <li>Each Holon can be part of a larger Holon structure</li>
+                <li>The same patterns apply at every level of nesting</li>
+            </ul>
+
+            <hr>
+            <p><strong>See Also:</strong>
+                <a href="/wiki/memory-lattice.html">Memory Lattice</a> &bull;
+                <a href="/wiki/architecture.html">Architecture</a> &bull;
+                <a href="/wiki/token-hud.html">Token HUD</a>
+            </p>
+        </main>
+    </div>
+</body>
+</html>

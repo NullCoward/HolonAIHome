@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary - HolonicEngine Wiki</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-void: #0a0a0f;
+            --bg-surface: rgba(15, 15, 25, 0.8);
+            --bg-elevated: rgba(20, 20, 35, 0.9);
+            --foam-1: #00ffcc;
+            --foam-2: #00d4ff;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+        }
+        body { background: var(--bg-void); min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text-primary); line-height: 1.6; }
+        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(0, 100, 150, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
+        .wiki-container { position: relative; z-index: 10; display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0; position: fixed; height: 100vh; overflow-y: auto; backdrop-filter: blur(20px); }
+        .sidebar-header { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; }
+        .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
+        .sidebar-logo-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--foam-1), var(--foam-2)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--bg-void); }
+        .sidebar-logo-text { font-size: 1.1rem; font-weight: 600; }
+        .sidebar-tagline { margin-top: 0.5rem; font-size: 0.8rem; color: var(--foam-2); font-style: italic; }
+        .nav-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; }
+        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: all 0.2s; border-left: 2px solid transparent; }
+        .nav-link:hover { color: var(--text-primary); background: rgba(0, 212, 255, 0.05); border-left-color: var(--foam-2); }
+        .nav-link.active { color: var(--foam-2); background: rgba(0, 212, 255, 0.08); border-left-color: var(--foam-2); }
+        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: absolute; bottom: 0; left: 0; right: 0; background: var(--bg-surface); }
+        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem; max-width: 900px; }
+        h1 { font-size: 2.5rem; font-weight: 300; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .page-subtitle { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        h2 { font-size: 1.3rem; font-weight: 500; margin: 2rem 0 1rem; color: var(--foam-1); }
+        h3 { font-size: 1rem; font-weight: 600; margin: 1rem 0 0.25rem; color: var(--text-primary); }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        .term { background: var(--bg-elevated); padding: 1rem 1.25rem; margin-bottom: 0.75rem; border-radius: 8px; border-left: 3px solid var(--foam-2); }
+        .term h3 { margin: 0 0 0.5rem 0; }
+        .term p { margin: 0; font-size: 0.95rem; }
+        hr { border: none; border-top: 1px solid var(--border-subtle); margin: 1.5rem 0; }
+        @media (max-width: 900px) { .sidebar { width: 100%; height: auto; position: relative; } .main-content { margin-left: 0; padding: 2rem 1.5rem; } .back-link { position: relative; } }
+    </style>
+</head>
+<body>
+    <div class="void-bg"></div>
+    <div class="wiki-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <a href="/wiki/" class="sidebar-logo"><div class="sidebar-logo-icon">H</div><span class="sidebar-logo-text">HolonicEngine</span></a>
+                <div class="sidebar-tagline">Agents with Agency</div>
+            </div>
+            <div class="nav-section">Core Concepts</div>
+            <a href="/wiki/" class="nav-link">Overview</a>
+            <a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
+            <a href="/wiki/architecture.html" class="nav-link">Architecture</a>
+            <a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
+            <div class="nav-section">Systems</div>
+            <a href="/wiki/heartbeat.html" class="nav-link">Heartbeat System</a>
+            <a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
+            <a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
+            <div class="nav-section">Vision</div>
+            <a href="/wiki/creativity.html" class="nav-link">Cross-Domain Creativity</a>
+            <a href="/wiki/glossary.html" class="nav-link active">Glossary</a>
+            <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
+        </nav>
+
+        <main class="main-content">
+            <h1>Glossary</h1>
+            <p class="page-subtitle">Key terms and concepts in the HolonicEngine.</p>
+
+            <h2>A</h2>
+            <div class="term"><h3>Action</h3><p>A callable function attached to a Holon. Actions are how the AI affects the world &mdash; callback functions that execute when the AI requests them.</p></div>
+            <div class="term"><h3>Action History</h3><p>A log of all actions executed, including triggers and LLM-directed actions. The agent reviews this to understand what happened.</p></div>
+            <div class="term"><h3>Agency</h3><p>The capacity to act independently and make choices. Holonic Agents have true agency &mdash; they make decisions about their own behavior, resources, and development.</p></div>
+
+            <h2>C</h2>
+            <div class="term"><h3>Compiled Cognition</h3><p>The process of converting conscious reasoning into automated scripts. Like how humans develop habits, agents compile repeated patterns into triggers.</p></div>
+            <div class="term"><h3>Context Window</h3><p>The maximum tokens an LLM can process in one call. The HolonicEngine solves context limits through the Memory Lattice.</p></div>
+
+            <h2>D</h2>
+            <div class="term"><h3>Demand Sphere</h3><p>Work that requires active LLM reasoning (token-expensive). Contrast with automated sphere.</p></div>
+            <div class="term"><h3>Discretionary Time</h3><p>Token budget remaining after work is done, available for self-directed activity like research, learning, or memory organization.</p></div>
+
+            <h2>E</h2>
+            <div class="term"><h3>Expert Holon</h3><p>A specialized holon that has taught itself about a specific domain (like an API) and serves as the agent's interface to that domain.</p></div>
+
+            <h2>H</h2>
+            <div class="term"><h3>Heartbeat</h3><p>The cognitive clock &mdash; a regular tick that drives the agent's life rhythm. Each heartbeat, the agent checks triggers, handles work, and potentially uses discretionary time.</p></div>
+            <div class="term"><h3>Holon</h3><p>The fundamental building block. A portable AI context capsule combining Purpose (who am I), Self (what do I know), and Actions (what can I do).</p></div>
+            <div class="term"><h3>Holonic Agent</h3><p>An AI agent built on the HolonicEngine architecture. Distinguished by true agency &mdash; persistent memory, self-awareness, autonomous behavior.</p></div>
+            <div class="term"><h3>HUD</h3><p>Heads-Up Display. The resource monitor that shows the agent its token usage, budget, and optimization options.</p></div>
+
+            <h2>I</h2>
+            <div class="term"><h3>Interactive Summary</h3><p>A summary that serves as a door to more detail, not a replacement for it. Can be expanded when needed.</p></div>
+            <div class="term"><h3>Internal Dialogue</h3><p>Querying holons within the lattice, like consulting parts of your own mind.</p></div>
+
+            <h2>M</h2>
+            <div class="term"><h3>Memory Lattice</h3><p>The hierarchical structure of holons that stores all the agent's knowledge. Navigable, expandable, persistent.</p></div>
+            <div class="term"><h3>Model-Agnostic</h3><p>The architecture works with any LLM (Claude, GPT, etc.) because state lives outside the model.</p></div>
+
+            <h2>P</h2>
+            <div class="term"><h3>Purpose</h3><p>The first component of a Holon. Defines who the holon is, its goals, constraints, and behavioral guidance.</p></div>
+            <div class="term"><h3>Portable Cognition</h3><p>The ability to move an agent's entire "mind" between systems, models, or storage backends.</p></div>
+
+            <h2>S</h2>
+            <div class="term"><h3>Self (State)</h3><p>The second component of a Holon. Contains current context, memory, child holons, and dynamic data.</p></div>
+            <div class="term"><h3>Spawn</h3><p>Creating a new holon, often as a child of an existing one.</p></div>
+
+            <h2>T</h2>
+            <div class="term"><h3>Token Budget</h3><p>The maximum tokens allocated for a specific purpose (per heartbeat, per holon, per task).</p></div>
+            <div class="term"><h3>Trigger Script</h3><p>A pre-written automation that executes without LLM cost when its trigger condition is met.</p></div>
+
+            <hr>
+            <h2>Taglines</h2>
+            <div class="term"><h3>"Agents with Agency"</h3><p>Holonic Agents actually have autonomy &mdash; they make decisions, manage resources, and develop over time.</p></div>
+            <div class="term"><h3>"AI wearing code like a body"</h3><p>The LLM is a reasoning engine; the Holon is the body it inhabits.</p></div>
+        </main>
+    </div>
+</body>
+</html>
