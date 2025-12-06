@@ -50,7 +50,34 @@
         }
         .sidebar-header { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; }
         .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
-                .sidebar-logo-icon {
+                .sidebar-logo-icon-wrapper {
+            position: relative;
+            width: 36px;
+            height: 36px;
+        }
+
+        .sidebar-logo-glow {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                var(--foam-1),
+                var(--foam-2),
+                var(--foam-3),
+                var(--foam-4),
+                var(--foam-1)
+            );
+            filter: blur(8px);
+            opacity: 0.85;
+            animation: logoGlowSpin 8s linear infinite;
+        }
+
+        .sidebar-logo-icon {
             position: relative;
             width: 36px;
             height: 36px;
@@ -63,26 +90,7 @@
             box-shadow:
                 inset 0 1px 2px rgba(255, 255, 255, 0.1),
                 inset 0 -1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        .sidebar-logo-icon::before {
-            content: '';
-            position: absolute;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                var(--foam-1),
-                var(--foam-2),
-                var(--foam-3),
-                var(--foam-4),
-                var(--foam-1)
-            );
-            filter: blur(8px);
-            opacity: 0.8;
-            z-index: -1;
-            animation: logoGlowSpin 8s linear infinite;
+            z-index: 1;
         }
 
         .sidebar-logo-icon::after {
@@ -173,7 +181,7 @@
         <nav class="sidebar">
             <div class="sidebar-header">
                 <a href="/wiki/" class="sidebar-logo">
-                    <div class="sidebar-logo-icon"><img src="/HolonAI.png" alt="Holonic"></div>
+                    <div class="sidebar-logo-icon-wrapper"><div class="sidebar-logo-glow"></div><div class="sidebar-logo-icon"><img src="/HolonAI.png" alt="Holonic"></div></div>
                     <span class="sidebar-logo-text">HolonicEngine</span>
                 </a>
                 <div class="sidebar-tagline">Agents with Agency</div>
