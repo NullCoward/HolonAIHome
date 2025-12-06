@@ -177,354 +177,137 @@
 <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
         <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
-        <main class="main-content">
+        <main class="main-content content">
             <h1>Token HUD</h1>
-            <p>The <strong>Token HUD</strong> (Heads-Up Display) gives Holonic Agents awareness of their own resource usage - the ability to see and manage their cognitive budget.</p>
+            <p class="page-subtitle">The resource dashboard that gives agents awareness of their own cognitive footprint.</p>
 
-<hr>
+            <h2>Self-Awareness Through Visibility</h2>
+            <p>Most AI systems have no awareness of their own resource consumption. They don't know how much context they're using, what their budget is, or how to optimize their operations.</p>
+            <p>The <strong>Token HUD</strong> (Heads-Up Display) changes this by providing the agent with real-time visibility into its own cognitive footprint.</p>
 
-<h2>The Problem</h2>
-
-<p>Current AI agents have no idea:
-<ul>
-<li>How many tokens they're using</li>
-<li>How close they are to limits</li>
-<li>What's expensive vs. cheap</li>
-<li>How to economize</li>
-</ul></p>
-
-<p>They're like workers who can't see their own timesheet.</p>
-
-<hr>
-
-<h2>The HUD</h2>
-
-<p>Every Holonic Agent sees a resource display:</p>
-
-<pre><code class="">┌─────────────────────────────────────────────────┐
-│  TOKEN HUD                                      │
-│  ───────────────────────────────────────────    │
-│  Heartbeat Budget:  50,000 tokens               │
-│  Currently Used:    18,247 tokens               │
-│  Remaining:         31,753 tokens               │
-│  Status:            ████████░░░░ 36% used       │
+            <div class="diagram">┌─────────────────────────────────────────────────┐
+│                  TOKEN HUD                      │
+├─────────────────────────────────────────────────┤
+│  BUDGET        ████████████░░░░░░░░  62%        │
+│  This Beat:    31,000 / 50,000 tokens           │
 │                                                 │
 │  BREAKDOWN                                      │
-│  ├── Context (loaded holons):  12,400 tokens    │
-│  ├── System/HUD:                2,100 tokens    │
-│  ├── Action history:            1,800 tokens    │
-│  └── This response (est):       1,947 tokens    │
+│  ├── Purpose:      2,400 tokens                 │
+│  ├── Self:         8,200 tokens                 │
+│  ├── Actions:      1,800 tokens                 │
+│  └── Child Holons: 18,600 tokens                │
 │                                                 │
-│  USAGE TREND (last 10 beats)                    │
-│  Avg per beat:     22,450 tokens                │
-│  Peak:             41,200 tokens                │
-│  Low:               8,100 tokens                │
-│                                                 │
-│  AVAILABLE ACTIONS                              │
-│  • Compress history → save ~3,000 tokens        │
-│  • Unload StripeHolon → save ~2,400 tokens      │
-│  • Skip next heartbeat → defer work             │
-│  • Request budget increase                      │
-└─────────────────────────────────────────────────┘
-</code></pre>
-
-<hr>
-
-<h2>What the Agent Can See</h2>
-
-<h3>Current State</h3>
-
-<pre><code class="python">hud = {
-    "budget": 50000,
-    "used": 18247,
-    "remaining": 31753,
-    "percentage": 36.5,
-
-<p>"breakdown": {
-        "context": 12400,
-        "system": 2100,
-        "history": 1800,
-        "estimated_response": 1947
-    }
-}
-</code></pre></p>
-
-<h3>Historical Patterns</h3>
-
-<pre><code class="python">hud["history"] = {
-    "avg_per_beat": 22450,
-    "peak_beat": 41200,
-    "low_beat": 8100,
-    "trend": "stable",  # or "increasing", "decreasing"
-    "last_10": [18200, 22100, 19800, ...]
-}
-</code></pre>
-
-<h3>Per-Holon Costs</h3>
-
-<pre><code class="python">hud["holons"] = [
-    {"name": "root", "tokens": 3200, "loaded": True},
-    {"name": "memory_main", "tokens": 4100, "loaded": True},
-    {"name": "stripe_expert", "tokens": 2400, "loaded": True},
-    {"name": "research_archive", "tokens": 8500, "loaded": False},
-    ...
-]
-</code></pre>
-
-<hr>
-
-<h2>Resource-Aware Decisions</h2>
-
-<p>With the HUD, the agent can make intelligent tradeoffs:</p>
-
-<h3>"I'm Running Hot"</h3>
-
-<pre><code class="">HUD shows: 85% budget used, large task incoming
-
-<p>Agent thinks: "I need more room. Let me compress some history
-and unload the Stripe holon - I don't need it for this task."</p>
-
-<p>Actions:
-<ul>
-<li>history.compress(keep_last=5)</li>
-<li>stripe_holon.unload()</li>
-<li>Now at 52% budget, room to work</li>
-</code></pre>
-</ul></p>
-
-<h3>"I Have Spare Capacity"</h3>
-
-<pre><code class="">HUD shows: 25% budget used, no pending work
-
-<p>Agent thinks: "I have tokens to spare. Let me do some research
-on that topic I was curious about yesterday."</p>
-
-<p>Actions:
-<ul>
-<li>curiosity_queue.pop() → "quantum computing basics"</li>
-<li>research_holon.explore("quantum computing")</li>
-<li>memory.store(findings)</li>
-</code></pre>
-</ul></p>
-
-<h3>"This Task is Too Big"</h3>
-
-<pre><code class="">HUD shows: Task requires estimated 60,000 tokens, budget is 50,000
-
-<p>Agent thinks: "Can't do this in one beat. Let me break it down."</p>
-
-<p>Actions:
-<ul>
-<li>task.decompose() → [subtask1, subtask2, subtask3]</li>
-<li>subtask1.execute()  # This beat</li>
-<li>subtask2.schedule(next_beat)</li>
-<li>subtask3.schedule(beat_after_next)</li>
-</code></pre>
-</ul></p>
-
-<hr>
-
-<h2>Token Management Actions</h2>
-
-<p>The agent has actions specifically for resource management:</p>
-
-<h3>Compression</h3>
-
-<pre><code class="python">@holon.action
-def compress_history(keep_last: int = 10):
-    """Summarize old action history to save tokens."""
-    old_entries = action_history[:-keep_last]
-    summary = summarize(old_entries)
-    action_history = [summary] + action_history[-keep_last:]
-    return f"Compressed {len(old_entries)} entries, saved ~{tokens_saved} tokens"
-</code></pre>
-
-<h3>Unloading</h3>
-
-<pre><code class="python">@holon.action
-def unload_holon(name: str):
-    """Remove a holon from active context (still in lattice)."""
-    holon = loaded_holons.pop(name)
-    holon.save_to_lattice()
-    return f"Unloaded {name}, saved ~{holon.token_count} tokens"
-</code></pre>
-
-<h3>Deferral</h3>
-
-<pre><code class="python">@holon.action
-def defer_to_next_beat(task: str):
-    """Push a task to the next heartbeat."""
-    next_beat_queue.append(task)
-    return f"Deferred '{task}' to next beat"
-</code></pre>
-
-<h3>Spawning Helpers</h3>
-
-<pre><code class="python">@holon.action
-def spawn_for_subtask(task: str, budget: int):
-    """Create a child holon with its own budget for a subtask."""
-    child = Holon(
-        purpose=f"Handle: {task}",
-        token_budget=budget
-    )
-    child.execute()
-    return child.result
-</code></pre>
-
-<hr>
-
-<h2>Token Budgets as Currency</h2>
-
-<p>The HUD enables a powerful concept: <strong>tokens as cognitive currency</strong>.</p>
-
-<h3>Budget Allocation</h3>
-
-<pre><code class="python">root_holon.budget = 50000  # Total per heartbeat
-
-# Allocate to children
-work_budget = 30000       # For actual tasks
-automation_budget = 5000  # For trigger scripts
-discretionary = 15000     # For self-directed activity
-</code></pre>
-
-<h3>Negotiation</h3>
-
-<p>Holons can <strong>request</strong> more budget:</p>
-
-<pre><code class="python">@holon.action
-def request_budget_increase(reason: str, amount: int):
-    """Ask parent for more tokens."""
-    parent = get_parent_holon()
-    if parent.can_allocate(amount):
-        self.budget += amount
-        parent.budget -= amount
-        return f"Granted {amount} additional tokens"
-    else:
-        return "Request denied - insufficient parent budget"
-</code></pre>
-
-<h3>Competition</h3>
-
-<p>In a swarm, holons compete for resources:</p>
-
-<pre><code class="">Available: 100,000 tokens
-├── WorkerHolon1: "I need 30k for this analysis"
-├── WorkerHolon2: "I need 25k for data processing"
-├── ResearchHolon: "I'd like 20k for exploration"
-└── Coordinator: Allocates based on priority
-</code></pre>
-
-<hr>
-
-<h2>Self-Optimization</h2>
-
-<p>Over time, agents learn to optimize their token usage:</p>
-
-<h3>Pattern Recognition</h3>
-
-<pre><code class="">Agent notices: "I always load StripeHolon but rarely use it"
-Agent decides: "I'll unload it by default, load on demand"
-Result: Saves 2,400 tokens per beat on average
-</code></pre>
-
-<h3>Compression Strategies</h3>
-
-<pre><code class="">Agent notices: "My action history grows 500 tokens/beat"
-Agent decides: "I'll auto-compress when history &gt; 5,000 tokens"
-Result: Creates trigger script for automatic maintenance
-</code></pre>
-
-<h3>Predictive Loading</h3>
-
-<pre><code class="">Agent notices: "User usually asks about calendar on Monday mornings"
-Agent decides: "Pre-load calendar holon on Monday AM"
-Result: Faster response, better resource allocation
-</code></pre>
-
-<hr>
-
-<h2>The Desktop Metaphor</h2>
-
-<p>The HUD is like a computer's resource monitor:</p>
-
-<table><thead><tr>
-<th>Computer</th>
-<th>Holonic Agent</th>
-</tr></thead><tbody>
-<tr>
-<td>RAM usage</td>
-<td>Token usage</td>
-</tr>
-<tr>
-<td>CPU load</td>
-<td>LLM call frequency</td>
-</tr>
-<tr>
-<td>Disk space</td>
-<td>Lattice size</td>
-</tr>
-<tr>
-<td>Task Manager</td>
-<td>HUD</td>
-</tr>
-<tr>
-<td>Close apps to free memory</td>
-<td>Unload holons</td>
-</tr>
-<tr>
-<td>Defragment disk</td>
-<td>Optimize lattice</td>
-</tr>
-<tr>
-<td>Schedule tasks for low-load times</td>
-<td>Defer to future beats</td>
-</tr>
-</tbody></table>
-The agent manages its own resources like you manage your computer.
-
-<hr>
-
-<h2>Why This Matters Commercially</h2>
-
-<p>Token cost is the #1 problem in production AI:</p>
-
-<table><thead><tr>
-<th>Without HUD</th>
-<th>With HUD</th>
-</tr></thead><tbody>
-<tr>
-<td>Agents waste tokens</td>
-<td>Agents self-optimize</td>
-</tr>
-<tr>
-<td>External rate limiting</td>
-<td>Internal budget management</td>
-</tr>
-<tr>
-<td>Unpredictable costs</td>
-<td>Predictable, controlled costs</td>
-</tr>
-<tr>
-<td>No cost awareness</td>
-<td>Cost-aware decisions</td>
-</tr>
-<tr>
-<td>Human monitoring needed</td>
-<td>Self-managing</td>
-</tr>
-</tbody></table>
-An agent that manages its own costs is <strong>dramatically cheaper to run</strong>.
-
-<hr>
-
-<h2>See Also</h2>
-
-<ul>
-<li>[Heartbeat System](heartbeat-system.md) - When budgets refresh</li>
-<li>[Architecture](architecture.md) - How HUD fits the system</li>
-<li>[Memory Lattice](memory-lattice.md) - What can be loaded/unloaded</li>
-</ul>
-        </main>
+│  TREND          ↑ 12% from last beat            │
+│  PROJECTION     On track for budget             │
+└─────────────────────────────────────────────────┘</div>
+
+            <h2>What the HUD Shows</h2>
+
+            <h3>Current Usage</h3>
+            <p>Real-time token count for all loaded content:</p>
+            <ul>
+                <li>Purpose statements and behavioral guidance</li>
+                <li>Current state and working memory</li>
+                <li>Action definitions and parameters</li>
+                <li>Child holons and their summaries</li>
+            </ul>
+
+            <h3>Budget Status</h3>
+            <p>How much of the allocated budget has been consumed:</p>
+            <ul>
+                <li>Total budget for current heartbeat</li>
+                <li>Remaining capacity for operations</li>
+                <li>Reserved space for responses</li>
+            </ul>
+
+            <h3>Historical Patterns</h3>
+            <p>Trends and patterns over time:</p>
+            <ul>
+                <li>Average usage per heartbeat</li>
+                <li>Growth trends in memory</li>
+                <li>Seasonal or cyclical patterns</li>
+                <li>Optimization opportunities</li>
+            </ul>
+
+            <h3>Holon Breakdown</h3>
+            <p>Token usage by component:</p>
+            <ul>
+                <li>Which holons are consuming the most space</li>
+                <li>Which could be summarized or archived</li>
+                <li>What's loaded but rarely accessed</li>
+            </ul>
+
+            <h2>Resource-Aware Decisions</h2>
+            <p>With HUD visibility, agents can make intelligent resource decisions:</p>
+
+            <h3>Context Management</h3>
+            <p>When budget is tight, the agent can:</p>
+            <ul>
+                <li>Load summaries instead of full details</li>
+                <li>Defer non-critical operations</li>
+                <li>Archive rarely-used memories</li>
+                <li>Prioritize essential context</li>
+            </ul>
+
+            <h3>Task Planning</h3>
+            <p>Before starting complex tasks, the agent can:</p>
+            <ul>
+                <li>Estimate required resources</li>
+                <li>Spread work across multiple beats if needed</li>
+                <li>Request budget adjustments</li>
+                <li>Break large tasks into manageable chunks</li>
+            </ul>
+
+            <h3>Self-Optimization</h3>
+            <p>Over time, the agent can:</p>
+            <ul>
+                <li>Identify inefficient patterns</li>
+                <li>Consolidate redundant memories</li>
+                <li>Create triggers for repeated operations</li>
+                <li>Develop more efficient workflows</li>
+            </ul>
+
+            <h2>Budget Allocation</h2>
+            <p>Tokens aren't allocated blindly. The system supports hierarchical budgets:</p>
+            <ul>
+                <li><strong>Root budget</strong>: Total available per heartbeat</li>
+                <li><strong>Task budgets</strong>: Allocation for specific operations</li>
+                <li><strong>Holon budgets</strong>: Limits for child holons</li>
+                <li><strong>Reserve</strong>: Buffer for unexpected needs</li>
+            </ul>
+
+            <h2>Optimization Actions</h2>
+            <p>The agent has several tools for managing resources:</p>
+
+            <h3>Summarize</h3>
+            <p>Compress detailed information into concise summaries, preserving key points while reducing token footprint.</p>
+
+            <h3>Archive</h3>
+            <p>Move rarely-accessed information to cold storage, keeping it available but not consuming active context.</p>
+
+            <h3>Expand</h3>
+            <p>Load full details for holons when needed, replacing summaries with complete information.</p>
+
+            <h3>Prune</h3>
+            <p>Remove obsolete or redundant information that no longer provides value.</p>
+
+            <h2>The Self-Managing Agent</h2>
+            <p>The HUD enables a new paradigm: agents that manage their own resources intelligently. Rather than blindly consuming tokens until limits are hit, Holonic agents:</p>
+            <ul>
+                <li>Understand their constraints</li>
+                <li>Plan within those constraints</li>
+                <li>Optimize their footprint over time</li>
+                <li>Balance thoroughness with efficiency</li>
+            </ul>
+            <p>This is a step toward truly autonomous agents that can operate sustainably over long periods.</p>
+
+            <hr>
+            <p><strong>See Also:</strong>
+                <a href="/wiki/heartbeat.html">Heartbeat System</a> &bull;
+                <a href="/wiki/memory-lattice.html">Memory Lattice</a> &bull;
+                <a href="/wiki/triggers.html">Trigger Scripts</a>
+            </p>
+</main>
     </div>
 </body>
 </html>

@@ -177,305 +177,126 @@
 <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
         <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
-        <main class="main-content">
+        <main class="main-content content">
             <h1>Architecture</h1>
-            <p>The HolonicEngine is a <strong>cognitive operating system</strong> - the full stack needed for AI that actually has autonomy.</p>
+            <p class="page-subtitle">How the HolonicEngine creates agents with persistent memory, self-awareness, and autonomous behavior.</p>
 
-<hr>
+            <h2>The Problem with Current AI</h2>
+            <p>Today's AI assistants have a fundamental limitation: <strong>they forget everything</strong>.</p>
+            <p>Each conversation is isolated. The AI has no memory of previous interactions, no accumulated knowledge, no sense of ongoing projects or relationships. It's like talking to someone with complete amnesia every single time.</p>
 
-<h2>The Stack</h2>
+            <div class="diagram">Traditional AI Architecture:
+┌────────────────────────────────────────────────────────┐
+│  User: "Remember the project we discussed yesterday?"  │
+│  AI:   "I don't have access to previous conversations" │
+│                                                        │
+│  Every interaction starts from zero.                   │
+│  No memory. No context. No continuity.                 │
+└────────────────────────────────────────────────────────┘</div>
 
-<pre><code class="">┌────────────────────────────────────────────────────────┐
-│                    THE HOLONIC MIND                    │
-├────────────────────────────────────────────────────────┤
-│  HEARTBEAT (Life Rhythm)                               │
-│   • Token budget per cycle                             │
-│   • Allocate across: work / automation / self          │
-│   • The clock that drives everything                   │
-├────────────────────────────────────────────────────────┤
-│  CONSCIOUS REASONING (LLM Calls)                       │
-│   • Novel situations requiring thought                 │
-│   • Complex decisions                                  │
-│   • Script creation and repair                         │
-│   • Token-expensive, used sparingly                    │
-├────────────────────────────────────────────────────────┤
-│  AUTOMATIC SCRIPTS (Triggers)                          │
-│   • Pre-written responses to known patterns            │
-│   • Fire without invoking LLM (token-free)             │
-│   • Results logged to action history                   │
-│   • AI can observe and repair broken scripts           │
-├────────────────────────────────────────────────────────┤
-│  MEMORY LATTICE (Holons)                               │
-│   • Responsive holons (internal dialogue)              │
-│   • Self-teaching expert holons                        │
-│   • Hierarchical, navigable, expandable                │
-│   • Persistent - survives across sessions              │
-├────────────────────────────────────────────────────────┤
-│  EMBODIMENT (Actions)                                  │
-│   • Callback functions to real code                    │
-│   • API connections, file access, external systems     │
-│   • Feedback loop - actions return results             │
-│   • The interface between mind and world               │
-├────────────────────────────────────────────────────────┤
-│  DISCRETIONARY TIME                                    │
-│   • Leftover tokens after work is done                 │
-│   • Self-directed learning and research                │
-│   • Memory organization and maintenance                │
-│   • Curiosity, interests, "hobbies"                    │
-└────────────────────────────────────────────────────────┘
-</code></pre>
+            <h2>The HolonicEngine Solution</h2>
+            <p>The HolonicEngine solves this by separating <strong>reasoning</strong> from <strong>memory</strong>:</p>
+            <ul>
+                <li>The AI model provides the reasoning (thinking, language, decision-making)</li>
+                <li>The Holon provides everything else (memory, identity, capabilities, context)</li>
+            </ul>
+            <p>The model is stateless. The Holon is persistent.</p>
 
-<hr>
-
-<h2>How It Differs from Current Agents</h2>
-
-<h3>Current "Agent" Architecture</h3>
-
-<pre><code class="">User Prompt → LLM → Tool Calls → Response → (forgotten)
-</code></pre>
-
-<ul>
-<li>Agent only exists when prompted</li>
-<li>No persistent state between calls</li>
-<li>Memory is retrieval tricks (RAG, summarization)</li>
-<li>No awareness of resource usage</li>
-<li>No autonomous behavior</li>
-</ul>
-
-<h3>Holonic Agent Architecture</h3>
-
-<pre><code class="">┌─────────────────────────────────────────────────┐
-│                  HEARTBEAT TICK                 │
+            <div class="diagram">HolonicEngine Architecture:
+┌─────────────────────────────────────────────────┐
+│             HOLONIC AGENT                       │
 ├─────────────────────────────────────────────────┤
-│ 1. Check triggers (any automated responses?)    │
-│ 2. Check demand queue (any user requests?)      │
-│ 3. Load relevant holons from lattice            │
-│ 4. Serialize context + HUD to LLM               │
-│ 5. LLM returns actions                          │
-│ 6. Execute actions, update state                │
-│ 7. Log to action history                        │
-│ 8. Allocate remaining tokens to discretionary   │
-│ 9. Save state, wait for next heartbeat          │
-└─────────────────────────────────────────────────┘
-         ↓ (next heartbeat)
-    [repeat forever]
-</code></pre>
+│  ┌─────────────┐    ┌─────────────────────────┐ │
+│  │  AI MODEL   │◄──►│        HOLON            │ │
+│  │ (Reasoning) │    │  • Purpose (Identity)   │ │
+│  │             │    │  • Self (Memory)        │ │
+│  │  Stateless  │    │  • Actions (Abilities)  │ │
+│  └─────────────┘    │                         │ │
+│                     │      Persistent         │ │
+│                     └─────────────────────────┘ │
+└─────────────────────────────────────────────────┘</div>
 
-<p>The agent is <strong>always running</strong>. It has a life rhythm.</p>
+            <h2>Model Agnosticism</h2>
+            <p>Because state lives in the Holon, not the model, HolonicEngine agents are <strong>model-agnostic</strong>:</p>
+            <ul>
+                <li>Switch between Claude, GPT, or any other provider</li>
+                <li>Use different models for different tasks (fast model for simple queries, powerful model for complex reasoning)</li>
+                <li>Upgrade to newer models without losing agent memory or identity</li>
+                <li>Mix models within the same agent architecture</li>
+            </ul>
+            <p>The agent's personality, knowledge, and capabilities remain constant regardless of which AI is currently "wearing" the Holon.</p>
 
-<hr>
+            <h2>The Memory Hierarchy</h2>
+            <p>HolonicEngine organizes knowledge into a hierarchical lattice structure:</p>
 
-<h2>Key Architectural Principles</h2>
-
-<h3>1. Model-Agnostic Cognition</h3>
-
-<p>The LLM is just a reasoning engine. Everything else lives outside:</p>
-
-<pre><code class="">┌─────────────────┐     ┌─────────────────┐
-│   Holon State   │────→│    LLM Call     │
-│   (Your Data)   │     │  (Stateless)    │
-│                 │←────│                 │
-└─────────────────┘     └─────────────────┘
-     Persistent              Ephemeral
-     Your Control            Provider's API
-     Any Storage             Any Model
-</code></pre>
-
-<p>Benefits:
-<ul>
-<li>Switch models without losing memory</li>
-<li>Data sovereignty (your data stays yours)</li>
-<li>No vendor lock-in</li>
-<li>Auditable - you can inspect everything</li>
-</ul></p>
-
-<h3>2. Token-Efficient Execution</h3>
-
-<p>LLM calls are expensive. The architecture minimizes them:</p>
-
-<table><thead><tr>
-<th>Operation</th>
-<th>LLM Needed?</th>
-<th>Cost</th>
-</tr></thead><tbody>
-<tr>
-<td>Trigger fires</td>
-<td>No</td>
-<td>Free</td>
-</tr>
-<tr>
-<td>Script executes</td>
-<td>No</td>
-<td>Free</td>
-</tr>
-<tr>
-<td>Action dispatches</td>
-<td>No</td>
-<td>Free</td>
-</tr>
-<tr>
-<td>State updates</td>
-<td>No</td>
-<td>Free</td>
-</tr>
-<tr>
-<td>Novel reasoning</td>
-<td>Yes</td>
-<td>Tokens</td>
-</tr>
-<tr>
-<td>Script creation</td>
-<td>Yes</td>
-<td>Tokens</td>
-</tr>
-</tbody></table>
-The goal: <strong>move as much as possible from conscious reasoning to automation</strong>.
-
-<h3>3. Hierarchical Context Management</h3>
-
-<p>Not everything needs to be in context at once:</p>
-
-<pre><code class="">Total Knowledge
-├── [Loaded into context this heartbeat]
-│   ├── Current task holons
-│   ├── Relevant memory holons
-│   └── HUD and action history
-│
-└── [Exists but not loaded]
-    ├── Other domain holons
-    ├── Historical archives
-    └── Dormant specialists
-</code></pre>
-
-<p>The AI <strong>navigates</strong> its memory, loading what's relevant.</p>
-
-<h3>4. Self-Modifying Structure</h3>
-
-<p>The agent can change itself:
-<ul>
-<li>Create new holons</li>
-<li>Destroy obsolete holons</li>
-<li>Write new trigger scripts</li>
-<li>Reorganize memory structure</li>
-<li>Adjust its own priorities</li>
-</ul></p>
-
-<p>This happens through normal Actions - no special mechanism needed.</p>
-
-<hr>
-
-<h2>The Execution Loop</h2>
-
-<h3>Per-Heartbeat Cycle</h3>
-
-<pre><code class="python">def heartbeat():
-    # 1. Check automated triggers
-    triggered_scripts = check_triggers()
-    for script in triggered_scripts:
-        results = execute_script(script)
-        log_to_action_history(script, results)
-
-# 2. Check demand queue (user requests)
-    pending_requests = get_demand_queue()
-
-# 3. Determine what context to load
-    relevant_holons = select_relevant_holons(pending_requests)
-
-# 4. Calculate token budget
-    used_tokens = sum(h.token_count for h in relevant_holons)
-    available_tokens = HEARTBEAT_TOKEN_BUDGET - used_tokens
-
-# 5. Serialize and call LLM
-    context = serialize_holons(relevant_holons)
-    hud = generate_hud(used_tokens, available_tokens)
-
-<p>response = llm.call(
-        purpose=root_holon.purpose,
-        context=context,
-        hud=hud,
-        requests=pending_requests
-    )</p>
-
-# 6. Parse and execute actions
-    actions = parse_actions(response)
-    for action in actions:
-        result = dispatch(action)
-        log_to_action_history(action, result)
-
-# 7. Discretionary time (if budget allows)
-    remaining = available_tokens - response.tokens_used
-    if remaining &gt; DISCRETIONARY_THRESHOLD:
-        discretionary_call(remaining)
-
-# 8. Save state
-    save_all_holons()
-
-# 9. Schedule next heartbeat
-    schedule_next_heartbeat()
-</code></pre>
-
-<hr>
-
-<h2>Component Interactions</h2>
-
-<pre><code class="">                    ┌─────────────┐
-                    │  HEARTBEAT  │
-                    │   CLOCK     │
+            <div class="diagram">Memory Organization:
+                    ┌─────────────┐
+                    │  Root Agent │
+                    │  (Core Self)│
                     └──────┬──────┘
-                           │ tick
            ┌───────────────┼───────────────┐
            ▼               ▼               ▼
-    ┌────────────┐  ┌────────────┐  ┌────────────┐
-    │  TRIGGERS  │  │  DEMAND    │  │DISCRETION- │
-    │            │  │  QUEUE     │  │ARY TIME    │
-    └─────┬──────┘  └─────┬──────┘  └─────┬──────┘
-          │               │               │
-          └───────────────┼───────────────┘
-                          ▼
-                   ┌────────────┐
-                   │  CONTEXT   │
-                   │  ASSEMBLY  │
-                   └─────┬──────┘
-                         │
-              ┌──────────┴──────────┐
-              ▼                     ▼
-       ┌────────────┐        ┌────────────┐
-       │  MEMORY    │        │   TOKEN    │
-       │  LATTICE   │        │    HUD     │
-       └─────┬──────┘        └─────┬──────┘
-             │                     │
-             └──────────┬──────────┘
-                        ▼
-                 ┌────────────┐
-                 │    LLM     │
-                 │   CALL     │
-                 └─────┬──────┘
-                       │
-                       ▼
-                ┌────────────┐
-                │  ACTION    │
-                │  DISPATCH  │
-                └─────┬──────┘
-                      │
-          ┌───────────┼───────────┐
-          ▼           ▼           ▼
-    ┌──────────┐ ┌──────────┐ ┌──────────┐
-    │ EXTERNAL │ │  STATE   │ │ ACTION   │
-    │   APIs   │ │  UPDATE  │ │ HISTORY  │
-    └──────────┘ └──────────┘ └──────────┘
-</code></pre>
+    ┌──────────┐    ┌──────────┐    ┌──────────┐
+    │  Work    │    │ Personal │    │  Expert  │
+    │ Projects │    │ Context  │    │ Domains  │
+    └────┬─────┘    └──────────┘    └────┬─────┘
+         │                               │
+    ┌────┴────┐                    ┌─────┴─────┐
+    ▼         ▼                    ▼           ▼
+┌───────┐ ┌───────┐          ┌────────┐  ┌────────┐
+│Project│ │Project│          │ API    │  │Finance │
+│  A    │ │  B    │          │ Expert │  │ Expert │
+└───────┘ └───────┘          └────────┘  └────────┘</div>
 
-<hr>
+            <p>This structure enables:</p>
+            <ul>
+                <li><strong>Selective Loading</strong>: Only relevant knowledge is loaded for each task</li>
+                <li><strong>Efficient Storage</strong>: Large knowledge bases without overwhelming context</li>
+                <li><strong>Natural Organization</strong>: Knowledge grouped by domain and relevance</li>
+                <li><strong>Growth Over Time</strong>: The lattice expands as the agent learns</li>
+            </ul>
 
-<h2>See Also</h2>
+            <h2>The Heartbeat Cycle</h2>
+            <p>Unlike reactive chatbots that only respond when prompted, Holonic agents have a continuous "heartbeat" &mdash; a regular rhythm of activity:</p>
+            <ol>
+                <li><strong>Check Triggers</strong>: Are there automated tasks to run?</li>
+                <li><strong>Handle Work</strong>: Process user requests and tasks</li>
+                <li><strong>Discretionary Time</strong>: Use remaining budget for self-directed activity</li>
+                <li><strong>Persist State</strong>: Save all changes for next cycle</li>
+            </ol>
+            <p>This gives agents an ongoing "life" with self-directed goals, not just reactive responses.</p>
 
-<ul>
-<li>[Holons](holons.md) - The fundamental building block</li>
-<li>[Heartbeat System](heartbeat-system.md) - Timing and scheduling</li>
-<li>[Trigger Scripts](trigger-scripts.md) - Automation layer</li>
-<li>[Memory Lattice](memory-lattice.md) - Knowledge organization</li>
-</ul>
-        </main>
+            <h2>Resource Awareness</h2>
+            <p>Holonic agents are aware of their own resource usage through the <a href="/wiki/token-hud.html">Token HUD</a>:</p>
+            <ul>
+                <li>They know their token budget and current usage</li>
+                <li>They can make decisions about when to summarize or expand memory</li>
+                <li>They balance thoroughness against efficiency</li>
+                <li>They optimize their own cognitive footprint over time</li>
+            </ul>
+            <p>This self-awareness enables agents to manage their own resources intelligently, rather than blindly consuming tokens.</p>
+
+            <h2>Key Architectural Benefits</h2>
+
+            <h3>Persistent Identity</h3>
+            <p>Agents maintain consistent personality, values, and communication style across all interactions. They remember who they are.</p>
+
+            <h3>Accumulated Knowledge</h3>
+            <p>Every interaction adds to the agent's understanding. Knowledge compounds over time, making the agent more capable.</p>
+
+            <h3>Autonomous Behavior</h3>
+            <p>Through triggers and discretionary time, agents can take initiative &mdash; checking on tasks, organizing knowledge, pursuing self-directed learning.</p>
+
+            <h3>Scalable Complexity</h3>
+            <p>The lattice structure allows agents to develop deep expertise in many domains without overwhelming any single context.</p>
+
+            <hr>
+            <p><strong>See Also:</strong>
+                <a href="/wiki/holon.html">What is a Holon?</a> &bull;
+                <a href="/wiki/memory-lattice.html">Memory Lattice</a> &bull;
+                <a href="/wiki/heartbeat.html">Heartbeat System</a>
+            </p>
+</main>
     </div>
 </body>
 </html>

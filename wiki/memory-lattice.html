@@ -177,300 +177,114 @@
 <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
         <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
-        <main class="main-content">
+        <main class="main-content content">
             <h1>Memory Lattice</h1>
-            <p>The <strong>Memory Lattice</strong> is how Holonic Agents organize knowledge - a navigable, hierarchical structure of holons that expands infinitely without hitting context limits.</p>
-
-<hr>
-
-<h2>The Problem with Current Memory</h2>
-
-<h3>Traditional Approaches</h3>
-
-<table><thead><tr>
-<th>Approach</th>
-<th>How it works</th>
-<th>The flaw</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Context window</strong></td>
-<td>Cram everything into the prompt</td>
-<td>Hits token limits</td>
-</tr>
-<tr>
-<td><strong>Summarization</strong></td>
-<td>Compress old content</td>
-<td>Loses fidelity</td>
-</tr>
-<tr>
-<td><strong>RAG</strong></td>
-<td>Retrieve relevant chunks</td>
-<td>Passive - AI doesn't control it</td>
-</tr>
-<tr>
-<td><strong>Vector DB</strong></td>
-<td>Semantic similarity search</td>
-<td>Chunks, not structure</td>
-</tr>
-</tbody></table>
-All of these treat memory as a <strong>tape</strong> - linear, compressed, externally managed.
-
-<h3>The Lattice Approach</h3>
-
-<p>Memory is a <strong>filesystem</strong>, not a tape.</p>
-
-<ul>
-<li>Knowledge exists whether or not it's loaded</li>
-<li>The AI navigates intentionally</li>
-<li>Summaries are doors, not replacements</li>
-<li>Structure is semantic and queryable</li>
-</ul>
-
-<hr>
-
-<h2>How It Works</h2>
-
-<h3>The Lattice Structure</h3>
-
-<pre><code class="">                    [Root Holon - "Me"]
-                           │
-          ┌────────────────┼────────────────┐
-          │                │                │
-    [Work Context]   [Personal]      [Projects]
-          │                │                │
-     ┌────┴────┐      ┌────┴────┐     ┌────┴────┐
-     │         │      │         │     │         │
- [Client A] [Client B] ...       ... [HolonicEngine]
-     │                                     │
-  ┌──┴──┐                            ┌─────┴─────┐
-  │     │                            │           │
-[Proj1][Proj2]                   [Aaron]    [Patent]
-                                     │
-                                ┌────┴────┐
-                                │         │
-                           [Convos]  [Decisions]
-</code></pre>
-
-<p>Each node is a <strong>Holon</strong>:
-<ul>
-<li>Has its own Purpose, Self, Actions</li>
-<li>Can be queried (responsive)</li>
-<li>Contains summaries of its children</li>
-<li>Can expand to show more detail</li>
-</ul></p>
-
-<h3>Navigation, Not Retrieval</h3>
-
-<pre><code class="">Current task: "Follow up with Aaron about patent"
-
-<p>Step 1: Look at lattice → Projects/HolonicEngine seems relevant
-Step 2: Check HolonicEngine summary → "Patent work with Aaron Brindell"
-Step 3: Expand Aaron holon → See conversation history, decisions
-Step 4: Load specific memories needed for response
-Step 5: Respond with full context
-</code></pre></p>
-
-<p>The AI <strong>chooses</strong> what to load. It's not retrieved for it.</p>
-
-<hr>
-
-<h2>Interactive Summaries</h2>
-
-<p>A key innovation: summaries are <strong>doors</strong>, not destinations.</p>
-
-<h3>Traditional Summary</h3>
-
-<pre><code class="">"Aaron and I discussed patent strategy. He's working with a lawyer."
-</code></pre>
-
-<p>Flat. Lossy. Can't get more detail if you need it.</p>
-
-<h3>Interactive Summary (Holon)</h3>
-
-<pre><code class="">[Aaron Patent Discussions] - Summary Holon
-├── Summary: "Patent strategy with Pranay Pattani, $8k quoted"
-├── Child: [Pranay Research] - lawyer background info
-├── Child: [Cost Analysis] - 401k considerations
-├── Child: [Timeline] - provisional deadlines
-└── Child: [Decisions Made] - key choices
-
-<p>Query: "What did we decide about the $8k?"
-→ Expands [Decisions Made]
-→ Returns: "Aaron decided the $8k was worth it as an
-   investment in himself. He has $300k in 401k, so
-   the risk is manageable."
-</code></pre></p>
-
-<p>You can always drill deeper. Nothing is truly lost.</p>
-
-<hr>
-
-<h2>Self-Teaching Expert Holons</h2>
-
-<p>A powerful pattern: spawn a holon to <strong>become an expert</strong>.</p>
-
-<pre><code class="python"># Need to work with Stripe API
-stripe_expert = spawn_holon(
-    name="StripeExpert",
-    purpose="Learn everything about Stripe API. Become my interface to it."
-)
-
-# The holon teaches itself
-stripe_expert.research()  # Reads docs, tutorials, examples
-stripe_expert.practice()  # Makes test API calls
-stripe_expert.organize()  # Structures knowledge internally
-
-# Later, when you need Stripe
-result = stripe_expert.execute("Create a $50 payment link")
-# → Handles all API details internally
-</code></pre>
-
-<p>The expert holon lives in your lattice permanently. You never have to re-learn Stripe - you just ask your expert.</p>
-
-<hr>
-
-<h2>Internal Dialogue</h2>
-
-<p>Holons are <strong>responsive</strong> - you can talk to them.</p>
-
-<p>This enables internal dialogue, like humans have:</p>
-
-<pre><code class="">Me: "PatentHolon, what's the status?"
-
-<p>PatentHolon: "Provisional filed December 2024.
-You have 10 months to file utility. Pranay
-quoted $8k. Key inventions: externalized
-cognition, token budgeting, heartbeat scheduling."</p>
-
-<p>Me: "What should I prioritize?"</p>
-
-<p>PatentHolon: "Based on our analysis, the
-'externalized cognition' claim is strongest -
-hardest to route around. I'd lead with that."
-</code></pre></p>
-
-<p>This is consulting <strong>parts of your own mind</strong> that have specialized knowledge.</p>
-
-<hr>
-
-<h2>Context Window Efficiency</h2>
-
-<p>The lattice solves the context limit problem:</p>
-
-<h3>Without Lattice (Current AI)</h3>
-
-<pre><code class="">Context window: 100k tokens
-Conversation history: 80k tokens (compressed from 500k)
-Room for response: 20k tokens
-
-<p>Problem: Old context is lossy. Important details lost.
-</code></pre></p>
-
-<h3>With Lattice</h3>
-
-<pre><code class="">Context window: 100k tokens
-Currently loaded:
-  - Root holon summary: 2k
-  - Relevant project holon: 5k
-  - Specific memory holons: 10k
-  - HUD and actions: 3k
-Total: 20k tokens
-
-<p>Room for response: 80k tokens</p>
-
-<p>Everything else: Exists in lattice, loadable on demand
-</code></pre></p>
-
-<p>The total memory is <strong>unbounded</strong>. Only what's relevant is loaded.</p>
-
-<hr>
-
-<h2>Lattice Operations</h2>
-
-<h3>Growing the Lattice</h3>
-
-<pre><code class="python"># Create new memory
-memory = holon.spawn_child(
-    name="TodaysInsight",
-    purpose="Store insight about cross-domain creativity",
-    content="AI with hobbies develops unexpected expertise..."
-)
-
-# Place it in the lattice
-holon.self_state.insights.add(memory)
-</code></pre>
-
-<h3>Navigating the Lattice</h3>
-
-<pre><code class="python"># Find relevant holons
-matches = lattice.search("patent strategy")
-
-# Get summary without loading full content
-summary = matches[0].summarize()
-
-# Expand if needed
-if needs_more_detail(summary):
-    full = matches[0].expand()
-</code></pre>
-
-<h3>Pruning the Lattice</h3>
-
-<pre><code class="python"># Old, irrelevant holons can be archived
-old_project = lattice.find("OldProject2019")
-old_project.archive()  # Moves to cold storage
-
-# Or merged
-similar = lattice.find_similar("MonthlyReports")
-merged = Holon.merge(similar, name="ReportsArchive")
-</code></pre>
-
-<hr>
-
-<h2>How Human Memory Works</h2>
-
-<p>The lattice mirrors how human memory actually functions:</p>
-
-<table><thead><tr>
-<th>Human Memory</th>
-<th>Lattice Equivalent</th>
-</tr></thead><tbody>
-<tr>
-<td>"I know that guy"</td>
-<td>Summary holon</td>
-</tr>
-<tr>
-<td>Focus → recall details</td>
-<td>Expand holon</td>
-</tr>
-<tr>
-<td>Expertise in a domain</td>
-<td>Specialist holon</td>
-</tr>
-<tr>
-<td>"It's on the tip of my tongue"</td>
-<td>Search, partial match</td>
-</tr>
-<tr>
-<td>Forgetting (graceful degradation)</td>
-<td>Archive, prune</td>
-</tr>
-<tr>
-<td>Free association</td>
-<td>Cross-lattice links</td>
-</tr>
-</tbody></table>
-The AI isn't doing "retrieval" - it's <strong>remembering</strong> the way you do.
-
-<hr>
-
-<h2>See Also</h2>
-
-<ul>
-<li>[Holons](holons.md) - The fundamental building block</li>
-<li>[Token HUD](token-hud.md) - Managing what's loaded</li>
-<li>[Vision: Creativity](vision-creativity.md) - Cross-domain connections</li>
-</ul>
-        </main>
+            <p class="page-subtitle">How Holonic agents organize unlimited knowledge in a navigable, hierarchical structure.</p>
+
+            <h2>The Context Window Problem</h2>
+            <p>Every AI model has a limited context window &mdash; a maximum amount of information it can process at once. This creates a fundamental challenge:</p>
+            <ul>
+                <li>Valuable knowledge gets lost when it exceeds the window</li>
+                <li>Long conversations lose important early context</li>
+                <li>Agents can't maintain deep expertise across many domains</li>
+                <li>There's no good way to organize accumulated knowledge</li>
+            </ul>
+            <p>The Memory Lattice solves this by creating a <strong>structured, navigable hierarchy</strong> of knowledge that can grow indefinitely.</p>
+
+            <h2>The Lattice Structure</h2>
+            <p>Instead of a flat list of memories, the lattice organizes knowledge into nested holons:</p>
+
+            <div class="diagram">                    [Root Agent]
+                         │
+         ┌───────────────┼───────────────┐
+         ▼               ▼               ▼
+    [Work Context]  [Personal]     [Expert Domains]
+         │               │               │
+    ┌────┴────┐         │         ┌─────┴─────┐
+    ▼         ▼         ▼         ▼           ▼
+[Project A][Project B][Contacts][API Expert][Finance]
+    │                              │
+    └── [Meeting Notes]            └── [Stripe]
+    └── [Decisions]                └── [Twilio]
+    └── [Action Items]             └── [OpenAI]</div>
+
+            <p>Each node in the lattice is itself a Holon &mdash; complete with its own purpose, state, and capabilities.</p>
+
+            <h2>Selective Loading</h2>
+            <p>The key insight is that you don't need all knowledge all the time. The agent:</p>
+            <ul>
+                <li><strong>Loads summaries first</strong>: Quick overview of what each holon contains</li>
+                <li><strong>Expands on demand</strong>: Detailed knowledge loaded only when relevant</li>
+                <li><strong>Prioritizes by context</strong>: Working on Project A? That context is expanded</li>
+                <li><strong>Maintains awareness</strong>: The agent knows what it knows, even when details aren't loaded</li>
+            </ul>
+            <p>This is like human memory &mdash; you don't consciously recall every detail of your life, but you know where to look when you need something.</p>
+
+            <h2>Expert Holons</h2>
+            <p>One of the most powerful patterns is the <strong>Expert Holon</strong> &mdash; a specialized child that becomes an expert in a specific domain:</p>
+            <ul>
+                <li>The agent encounters a new API or system</li>
+                <li>It creates an Expert Holon to study and remember that domain</li>
+                <li>The expert accumulates knowledge through use</li>
+                <li>Future interactions benefit from this accumulated expertise</li>
+            </ul>
+            <p>Over time, the agent develops a team of internal experts it can consult for different domains.</p>
+
+            <h2>Internal Dialogue</h2>
+            <p>Because holons are conversational, the agent can query its own knowledge structure:</p>
+            <ul>
+                <li>Ask the Project holon for current status and blockers</li>
+                <li>Consult the API Expert about integration options</li>
+                <li>Query the Contacts holon about relationship history</li>
+                <li>Check the Calendar holon for scheduling conflicts</li>
+            </ul>
+            <p>This creates a form of internal dialogue &mdash; the agent consulting specialized parts of its own mind.</p>
+
+            <h2>Memory Operations</h2>
+            <p>The lattice supports several key operations:</p>
+
+            <h3>Remember</h3>
+            <p>New information is stored in the appropriate location in the lattice. The agent decides where it belongs based on context and relevance.</p>
+
+            <h3>Recall</h3>
+            <p>When information is needed, the agent navigates the lattice to find relevant holons and expands their detail level.</p>
+
+            <h3>Summarize</h3>
+            <p>As holons grow, they can be summarized to maintain efficient overviews while preserving detail when needed.</p>
+
+            <h3>Archive</h3>
+            <p>Old or rarely-accessed information can be archived &mdash; still accessible but not consuming active context.</p>
+
+            <h3>Spawn</h3>
+            <p>New holons can be created to organize emerging knowledge areas or handle new domains.</p>
+
+            <h2>Growth Over Time</h2>
+            <p>The lattice is designed to grow indefinitely:</p>
+            <ul>
+                <li>New projects spawn new project holons</li>
+                <li>New domains spawn new expert holons</li>
+                <li>Relationships develop their own context holons</li>
+                <li>The agent's capability compounds with experience</li>
+            </ul>
+            <p>Unlike traditional AI that starts fresh each session, a Holonic agent becomes more knowledgeable and capable over its lifetime.</p>
+
+            <h2>Comparison to Human Memory</h2>
+            <p>The Memory Lattice mirrors how human memory actually works:</p>
+            <ul>
+                <li><strong>Hierarchical organization</strong>: Knowledge grouped by topic and association</li>
+                <li><strong>Selective recall</strong>: Not everything conscious at once, but accessible</li>
+                <li><strong>Consolidation</strong>: Important information strengthened, trivia fades</li>
+                <li><strong>Expertise development</strong>: Deep knowledge in practiced domains</li>
+            </ul>
+            <p>This isn't arbitrary &mdash; human memory evolved these patterns because they work for managing large knowledge bases efficiently.</p>
+
+            <hr>
+            <p><strong>See Also:</strong>
+                <a href="/wiki/holon.html">What is a Holon?</a> &bull;
+                <a href="/wiki/architecture.html">Architecture</a> &bull;
+                <a href="/wiki/token-hud.html">Token HUD</a>
+            </p>
+</main>
     </div>
 </body>
 </html>

@@ -177,335 +177,125 @@
 <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
         <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
-        <main class="main-content">
+        <main class="main-content content">
             <h1>Trigger Scripts</h1>
-            <strong>Trigger Scripts</strong> are AI-authored automations - pre-written responses to known patterns that execute without LLM cost.
-
-<hr>
-
-<h2>The Core Idea</h2>
-
-<p>Humans automate themselves all the time:
-<ul>
-<li>Email filters that sort incoming mail</li>
-<li>Phone rules that silence notifications at night</li>
-<li>Habits that run without conscious thought</li>
-</ul></p>
-
-<p>Why can't AI agents do the same?</p>
-
-<strong>Trigger Scripts</strong> let the agent write its own automations:
-
-<pre><code class="">TRIGGER: email.received(from='<em>@anthropic.com')
-SCRIPT:
-  1. email_holon.summarize(incoming)
-  2. anthropic_contact.update(incoming)
-  3. notify_me("Email from Anthropic!")
-</code></pre>
-
-<p>When the trigger condition is met, the script executes <strong>without invoking the LLM</strong>. Token-free automation.</p>
-
-<hr>
-
-<h2>Why This Matters</h2>
-
-<h3>Current Agent Pattern</h3>
-
-<pre><code class="">Event occurs → Invoke LLM → LLM decides response → Execute
-</code></pre>
-
-<p>Every event costs tokens. Even predictable, repetitive responses.</p>
-
-<h3>With Trigger Scripts</h3>
-
-<pre><code class="">Event occurs → Check triggers → Match found?
-├── YES → Execute script (no LLM) → Log to history
-└── NO  → Invoke LLM → Decide response → Maybe create trigger for next time
-</code></pre>
-
-<p>The agent <strong>learns</strong> to automate. Over time, more and more patterns become scripted.</p>
-
-<hr>
-
-<h2>Anatomy of a Trigger Script</h2>
-
-<pre><code class="javascript">{
-  // When to fire
-  "trigger": {
-    "event": "email.received",
-    "conditions": {
-      "from": "</em>@anthropic.com"
-    }
-  },
-
-<p>// What to do
-  "script": [
-    {"action": "email_holon.summarize", "args": {"message": "$incoming"}},
-    {"action": "anthropic_contact.update", "args": {"message": "$incoming"}},
-    {"action": "notify_me", "args": {"text": "Email from Anthropic!"}}
-  ],</p>
-
-<p>// Metadata
-  "created_by": "root_holon",
-  "created_at": "2025-12-05",
-  "last_fired": null,
-  "fire_count": 0,</p>
-
-<p>// Control
-  "enabled": true,
-  "max_fires": null,  // null = unlimited
-  "cooldown": "5 minutes"
-}
-</code></pre></p>
-
-<hr>
-
-<h2>Trigger Types</h2>
-
-<h3>Event-Based</h3>
-
-<p>Fire when something happens:</p>
-
-<pre><code class="javascript">// External events
-"email.received(from='...')"
-"api.response(status=200)"
-"file.created(path='/data/<em>')"
-"webhook.received(source='stripe')"
-
-<p>// Internal events
-"holon.spawned(name='</em>')"
-"action.completed(name='research')"
-"memory.updated(key='important')"
-"error.occurred(severity='high')"
-</code></pre></p>
-
-<h3>Time-Based</h3>
-
-<p>Fire on schedule:</p>
-
-<pre><code class="javascript">// Recurring
-"schedule('every 1 hour')"
-"schedule('daily at 9am')"
-"schedule('weekdays at 6pm')"
-
-<p>// Relative to heartbeat
-"heartbeat(every=10)"  // Every 10th heartbeat
-"heartbeat(offset=5)"  // 5 beats from now
-</code></pre></p>
-
-<h3>Condition-Based</h3>
-
-<p>Fire when state matches:</p>
-
-<pre><code class="javascript">// Resource conditions
-"token_budget &lt; 1000"
-"memory.size &gt; 50000"
-"holon.count &gt; 100"
-
-<p>// State conditions
-"memory.contains('urgent')"
-"queue.length &gt; 5"
-"last_user_contact &gt; '1 hour'"
-</code></pre></p>
-
-<h3>Manual</h3>
-
-<p>Fire when explicitly called:</p>
-
-<pre><code class="javascript">"manual('do_weekly_review')"
-"manual('cleanup_old_holons')"
-</code></pre>
-
-<hr>
-
-<h2>Script Actions</h2>
-
-<p>Scripts are sequences of holon actions:</p>
-
-<pre><code class="javascript">"script": [
-  // Call any holon's action
-  {"action": "stripe_holon.create_payment", "args": {...}},
-
-<p>// Reference results from previous steps
-  {"action": "log_holon.record", "args": {"result": "$prev"}},</p>
-
-<p>// Conditional execution
-  {"if": "$prev.success", "action": "notify_me", "args": {...}},</p>
-
-<p>// Spawn new holons
-  {"action": "spawn_holon", "args": {"purpose": "Handle this case"}},</p>
-
-<p>// Modify state
-  {"action": "memory.write", "args": {"key": "last_processed", "value": "$now"}}
-]
-</code></pre></p>
-
-<hr>
-
-<h2>The "Compiled Cognition" Metaphor</h2>
-
-<p>This mirrors how human brains work:</p>
-
-<table><thead><tr>
-<th>Stage</th>
-<th>Human</th>
-<th>Holonic Agent</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Novel situation</strong></td>
-<td>Conscious thought (slow, effortful)</td>
-<td>LLM call (expensive)</td>
-</tr>
-<tr>
-<td><strong>Pattern recognized</strong></td>
-<td>Start building habit</td>
-<td>Consider creating trigger</td>
-</tr>
-<tr>
-<td><strong>Pattern repeated</strong></td>
-<td>Habit forms</td>
-<td>Trigger script written</td>
-</tr>
-<tr>
-<td><strong>Pattern encountered</strong></td>
-<td>Automatic response (fast, effortless)</td>
-<td>Script fires (free)</td>
-</tr>
-<tr>
-<td><strong>Something unexpected</strong></td>
-<td>Habit breaks, conscious review</td>
-<td>Script fails, escalate to LLM</td>
-</tr>
-</tbody></table>
-The agent <strong>compiles</strong> repeated cognition into automation.
-
-<hr>
-
-<h2>Observability</h2>
-
-<p>Scripts execute without the LLM, but the agent still <strong>sees what happened</strong>:</p>
-
-<pre><code class="">ACTION HISTORY (Heartbeat 47)
-├── [TRIGGER] email_filter_anthropic fired
-│   ├── email_holon.summarize → "Partnership inquiry from Dario"
-│   ├── anthropic_contact.update → contact added
-│   └── notify_me → notification sent
-│
-├── [TRIGGER] daily_memory_cleanup fired
-│   ├── old_memories.prune → removed 12 holons
-│   └── lattice.optimize → reduced fragmentation 15%
-│
-└── [LLM] User request handled
-    └── ... normal response ...
-</code></pre>
-
-<p>On the next LLM call, the agent can review its action history and:
-<ul>
-<li>See that triggers fired</li>
-<li>Notice if something went wrong</li>
-<li>Adjust or repair scripts</li>
-</ul></p>
-
-<hr>
-
-<h2>Self-Repair</h2>
-
-<p>When scripts fail or produce unexpected results:</p>
-
-<pre><code class="">ACTION HISTORY
-├── [TRIGGER] auto_responder fired
-│   ├── draft_response → "Thanks for your email..."
-│   └── send_email → ERROR: recipient rejected
-│
-└── Script failure logged
-
-<p>NEXT HEARTBEAT (LLM)
-├── Agent sees: "auto_responder failed - recipient rejected"
-├── Agent investigates: "Ah, the email address changed"
-├── Agent fixes: Updates script with new address
-└── Agent adds: Condition to check address validity first
-</code></pre></p>
-
-<p>The agent maintains its own automations.</p>
-
-<hr>
-
-<h2>Example Scripts</h2>
-
-<h3>Email Triage</h3>
-
-<pre><code class="javascript">{
-  "trigger": "email.received",
-  "script": [
-    {"action": "email_holon.categorize", "args": {"message": "$incoming"}},
-    {"if": "$prev.category == 'urgent'",
-     "action": "demand_queue.add", "args": {"priority": "high", "item": "$incoming"}},
-    {"if": "$prev.category == 'newsletter'",
-     "action": "reading_list.add", "args": {"item": "$incoming"}},
-    {"action": "email_memory.log", "args": {"summary": "$prev.summary"}}
-  ]
-}
-</code></pre>
-
-<h3>Daily Review</h3>
-
-<pre><code class="javascript">{
-  "trigger": "schedule('daily at 7am')",
-  "script": [
-    {"action": "memory_holon.generate_summary", "args": {"period": "yesterday"}},
-    {"action": "calendar_holon.get_today", "args": {}},
-    {"action": "priorities_holon.refresh", "args": {"summary": "$step1", "calendar": "$step2"}},
-    {"action": "notify_me", "args": {"text": "Daily brief ready"}}
-  ]
-}
-</code></pre>
-
-<h3>API Rate Limit Handler</h3>
-
-<pre><code class="javascript">{
-  "trigger": "api.response(status=429)",
-  "script": [
-    {"action": "api_queue.pause", "args": {"duration": "1 minute"}},
-    {"action": "log", "args": {"message": "Rate limited, pausing"}},
-    {"action": "schedule_retry", "args": {"after": "2 minutes"}}
-  ]
-}
-</code></pre>
-
-<hr>
-
-<h2>Creating Triggers</h2>
-
-<p>The agent creates triggers through normal actions:</p>
-
-<pre><code class="python"># Agent decides to automate something
-@holon.action
-def create_trigger(event: str, script: list, name: str):
-    """Create a new trigger script."""
-    trigger = {
-        "name": name,
-        "trigger": event,
-        "script": script,
-        "created_by": holon.name,
-        "created_at": now(),
-        "enabled": True
-    }
-    trigger_registry.add(trigger)
-    return f"Trigger '{name}' created"
-</code></pre>
-
-<p>The agent just calls <code>create_trigger</code> like any other action.</p>
-
-<hr>
-
-<h2>See Also</h2>
-
-<ul>
-<li>[Architecture](architecture.md) - How triggers fit the system</li>
-<li>[Heartbeat System](heartbeat-system.md) - When triggers are checked</li>
-<li>[Holons](holons.md) - Actions that scripts call</li>
-</ul>
-        </main>
+            <p class="page-subtitle">Zero-cost automations that extend agent behavior without consuming reasoning budget.</p>
+
+            <h2>The Automation Layer</h2>
+            <p>Not every agent behavior needs AI reasoning. Many actions are routine, predictable, and can be automated. <strong>Trigger Scripts</strong> are pre-defined automations that run without consuming the agent's token budget.</p>
+            <p>Think of triggers like habits &mdash; learned behaviors that execute automatically when certain conditions are met, freeing up conscious attention for more complex tasks.</p>
+
+            <h2>Trigger vs. Reasoning</h2>
+            <p>Every event the agent handles falls into one of two categories:</p>
+
+            <div class="diagram">┌─────────────────────────────────────────────────┐
+│  EVENT HANDLING                                 │
+├──────────────────────┬──────────────────────────┤
+│  TRIGGERS            │  REASONING               │
+│  (Zero token cost)   │  (Uses AI budget)        │
+├──────────────────────┼──────────────────────────┤
+│  • Predictable       │  • Novel situations      │
+│  • Rule-based        │  • Requires judgment     │
+│  • High-frequency    │  • Complex decisions     │
+│  • Routine tasks     │  • Creative responses    │
+└──────────────────────┴──────────────────────────┘</div>
+
+            <p>By handling routine events with triggers, the agent preserves its reasoning budget for situations that truly need it.</p>
+
+            <h2>Types of Triggers</h2>
+
+            <h3>Event Triggers</h3>
+            <p>Fire when specific external events occur:</p>
+            <ul>
+                <li>Email received from specific sender</li>
+                <li>Message arrives in monitored channel</li>
+                <li>File changes in watched directory</li>
+                <li>API webhook received</li>
+            </ul>
+
+            <h3>Schedule Triggers</h3>
+            <p>Fire at specified times or intervals:</p>
+            <ul>
+                <li>Daily morning briefing</li>
+                <li>Weekly status report</li>
+                <li>Hourly system check</li>
+                <li>End-of-month summary</li>
+            </ul>
+
+            <h3>Condition Triggers</h3>
+            <p>Fire when internal conditions are met:</p>
+            <ul>
+                <li>Token budget falls below threshold</li>
+                <li>Memory usage exceeds limit</li>
+                <li>Task has been pending too long</li>
+                <li>Error count exceeds threshold</li>
+            </ul>
+
+            <h3>Manual Triggers</h3>
+            <p>Invoked by user command or other explicit action:</p>
+            <ul>
+                <li>User requests specific workflow</li>
+                <li>Scheduled task completion</li>
+                <li>System maintenance commands</li>
+            </ul>
+
+            <h2>Trigger Actions</h2>
+            <p>When a trigger fires, it can execute a variety of actions:</p>
+            <ul>
+                <li>Modify the agent's state</li>
+                <li>Send notifications</li>
+                <li>Update external systems</li>
+                <li>Queue tasks for later processing</li>
+                <li>Log events for analysis</li>
+                <li>Escalate to AI reasoning if needed</li>
+            </ul>
+
+            <h2>The Action History</h2>
+            <p>All trigger executions are logged in the agent's action history. On each heartbeat, the agent sees what happened since its last reasoning cycle:</p>
+            <ul>
+                <li>Which triggers fired and why</li>
+                <li>What actions were taken automatically</li>
+                <li>Any events that need attention</li>
+                <li>Resource usage from automated actions</li>
+            </ul>
+            <p>This gives the agent awareness of automated activity without having to process each event individually.</p>
+
+            <h2>Compiled Cognition</h2>
+            <p>One of the most powerful aspects of triggers is <strong>compiled cognition</strong> &mdash; the ability to convert repeated reasoning patterns into automated triggers.</p>
+            <p>When the agent notices it's making the same decision repeatedly, it can:</p>
+            <ol>
+                <li>Recognize the pattern</li>
+                <li>Create a trigger to handle it automatically</li>
+                <li>Free up reasoning budget for novel situations</li>
+            </ol>
+            <p>This is analogous to how humans develop habits &mdash; conscious decisions that become automatic through repetition.</p>
+
+            <h2>Example Workflows</h2>
+
+            <h3>Email Triage</h3>
+            <p>Triggers handle routine emails automatically: acknowledgments, forwarding to appropriate holons, flagging for priority. Only unusual emails escalate to AI reasoning.</p>
+
+            <h3>System Monitoring</h3>
+            <p>Triggers watch for error conditions, resource limits, and anomalies. Normal operation is handled silently; exceptions trigger alerts or reasoning cycles.</p>
+
+            <h3>Knowledge Maintenance</h3>
+            <p>Scheduled triggers maintain the memory lattice: summarizing old memories, archiving stale information, updating expert holons with new patterns.</p>
+
+            <h2>The Two Spheres</h2>
+            <p>Triggers create a natural division of agent activity:</p>
+            <ul>
+                <li><strong>Automated Sphere</strong>: High-volume, routine, zero-cost operations</li>
+                <li><strong>Demand Sphere</strong>: Novel, complex, reasoning-intensive work</li>
+            </ul>
+            <p>Effective agents maximize the automated sphere, reserving reasoning power for situations that truly require intelligence.</p>
+
+            <hr>
+            <p><strong>See Also:</strong>
+                <a href="/wiki/heartbeat.html">Heartbeat System</a> &bull;
+                <a href="/wiki/token-hud.html">Token HUD</a> &bull;
+                <a href="/wiki/architecture.html">Architecture</a>
+            </p>
+</main>
     </div>
 </body>
 </html>

@@ -158,57 +158,58 @@
             <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
         </nav>
 
-        <main class="main-content">
+        <main class="main-content content">
             <h1>Glossary</h1>
             <p class="page-subtitle">Key terms and concepts in the HolonicEngine.</p>
 
             <h2>A</h2>
-            <div class="term"><h3>Action</h3><p>A callable function attached to a Holon. Actions are how the AI affects the world &mdash; callback functions that execute when the AI requests them.</p></div>
-            <div class="term"><h3>Action History</h3><p>A log of all actions executed, including triggers and LLM-directed actions. The agent reviews this to understand what happened.</p></div>
+            <div class="term"><h3>Action</h3><p>A capability attached to a Holon that allows it to affect the world. Actions are how the agent interacts with external systems, modifies its own state, and accomplishes tasks.</p></div>
+            <div class="term"><h3>Action History</h3><p>A log of all actions executed, including automated triggers and AI-directed operations. The agent reviews this to understand what happened between reasoning cycles.</p></div>
             <div class="term"><h3>Agency</h3><p>The capacity to act independently and make choices. Holonic Agents have true agency &mdash; they make decisions about their own behavior, resources, and development.</p></div>
+            <div class="term"><h3>Automated Sphere</h3><p>Work handled by triggers without AI reasoning cost. High-volume, routine operations that don't require judgment.</p></div>
 
             <h2>C</h2>
-            <div class="term"><h3>Compiled Cognition</h3><p>The process of converting conscious reasoning into automated scripts. Like how humans develop habits, agents compile repeated patterns into triggers.</p></div>
-            <div class="term"><h3>Context Window</h3><p>The maximum tokens an LLM can process in one call. The HolonicEngine solves context limits through the Memory Lattice.</p></div>
+            <div class="term"><h3>Compiled Cognition</h3><p>The process of converting conscious reasoning into automated triggers. Like how humans develop habits, agents compile repeated patterns into zero-cost automations.</p></div>
+            <div class="term"><h3>Context Window</h3><p>The maximum tokens an AI can process in one call. The HolonicEngine transcends this limitation through the Memory Lattice.</p></div>
 
             <h2>D</h2>
-            <div class="term"><h3>Demand Sphere</h3><p>Work that requires active LLM reasoning (token-expensive). Contrast with automated sphere.</p></div>
-            <div class="term"><h3>Discretionary Time</h3><p>Token budget remaining after work is done, available for self-directed activity like research, learning, or memory organization.</p></div>
+            <div class="term"><h3>Demand Sphere</h3><p>Work that requires active AI reasoning. Novel situations, complex decisions, and creative tasks that can't be automated.</p></div>
+            <div class="term"><h3>Discretionary Time</h3><p>Token budget remaining after work is done, available for self-directed activity like research, learning, memory organization, or creative exploration.</p></div>
 
             <h2>E</h2>
-            <div class="term"><h3>Expert Holon</h3><p>A specialized holon that has taught itself about a specific domain (like an API) and serves as the agent's interface to that domain.</p></div>
+            <div class="term"><h3>Expert Holon</h3><p>A specialized child holon that has developed deep knowledge about a specific domain. The agent creates these to build expertise in areas it encounters frequently.</p></div>
 
             <h2>H</h2>
-            <div class="term"><h3>Heartbeat</h3><p>The cognitive clock &mdash; a regular tick that drives the agent's life rhythm. Each heartbeat, the agent checks triggers, handles work, and potentially uses discretionary time.</p></div>
+            <div class="term"><h3>Heartbeat</h3><p>The cognitive clock &mdash; a regular cycle that drives the agent's life rhythm. Each heartbeat, the agent checks triggers, handles work, and potentially uses discretionary time.</p></div>
             <div class="term"><h3>Holon</h3><p>The fundamental building block. A portable AI context capsule combining Purpose (who am I), Self (what do I know), and Actions (what can I do).</p></div>
-            <div class="term"><h3>Holonic Agent</h3><p>An AI agent built on the HolonicEngine architecture. Distinguished by true agency &mdash; persistent memory, self-awareness, autonomous behavior.</p></div>
-            <div class="term"><h3>HUD</h3><p>Heads-Up Display. The resource monitor that shows the agent its token usage, budget, and optimization options.</p></div>
+            <div class="term"><h3>Holonic Agent</h3><p>An AI agent built on the HolonicEngine architecture. Distinguished by persistent memory, self-awareness, and autonomous behavior &mdash; true agency.</p></div>
+            <div class="term"><h3>HUD (Token HUD)</h3><p>Heads-Up Display. The resource dashboard that shows the agent its token usage, budget, and optimization options, enabling self-aware resource management.</p></div>
 
             <h2>I</h2>
-            <div class="term"><h3>Interactive Summary</h3><p>A summary that serves as a door to more detail, not a replacement for it. Can be expanded when needed.</p></div>
-            <div class="term"><h3>Internal Dialogue</h3><p>Querying holons within the lattice, like consulting parts of your own mind.</p></div>
+            <div class="term"><h3>Interactive Summary</h3><p>A summary that serves as a door to more detail, not a replacement for it. Summaries can be expanded when full context is needed.</p></div>
+            <div class="term"><h3>Internal Dialogue</h3><p>Querying holons within the lattice, like consulting specialized parts of your own mind. Enables the agent to leverage accumulated expertise.</p></div>
 
             <h2>M</h2>
-            <div class="term"><h3>Memory Lattice</h3><p>The hierarchical structure of holons that stores all the agent's knowledge. Navigable, expandable, persistent.</p></div>
-            <div class="term"><h3>Model-Agnostic</h3><p>The architecture works with any LLM (Claude, GPT, etc.) because state lives outside the model.</p></div>
+            <div class="term"><h3>Memory Lattice</h3><p>The hierarchical structure of holons that stores all the agent's knowledge. Navigable, expandable, persistent, and unlimited in potential size.</p></div>
+            <div class="term"><h3>Model-Agnostic</h3><p>The architecture works with any AI model (Claude, GPT, etc.) because state lives in the Holon, not the model. Enables switching providers without losing agent identity.</p></div>
 
             <h2>P</h2>
-            <div class="term"><h3>Purpose</h3><p>The first component of a Holon. Defines who the holon is, its goals, constraints, and behavioral guidance.</p></div>
-            <div class="term"><h3>Portable Cognition</h3><p>The ability to move an agent's entire "mind" between systems, models, or storage backends.</p></div>
+            <div class="term"><h3>Portable Cognition</h3><p>The ability to move an agent's entire "mind" between systems, models, or storage backends. Because Holons are pure data, agents can be migrated seamlessly.</p></div>
+            <div class="term"><h3>Purpose</h3><p>The first component of a Holon. Defines who the holon is, its goals, constraints, personality, and behavioral guidance &mdash; the interpretive lens for all activity.</p></div>
 
             <h2>S</h2>
-            <div class="term"><h3>Self (State)</h3><p>The second component of a Holon. Contains current context, memory, child holons, and dynamic data.</p></div>
-            <div class="term"><h3>Spawn</h3><p>Creating a new holon, often as a child of an existing one.</p></div>
+            <div class="term"><h3>Self (State)</h3><p>The second component of a Holon. Contains current context, accumulated memory, child holons, and dynamic data &mdash; everything that makes this agent unique.</p></div>
+            <div class="term"><h3>Spawn</h3><p>Creating a new holon, often as a child of an existing one. How agents grow their memory lattice and develop new areas of expertise.</p></div>
 
             <h2>T</h2>
-            <div class="term"><h3>Token Budget</h3><p>The maximum tokens allocated for a specific purpose (per heartbeat, per holon, per task).</p></div>
-            <div class="term"><h3>Trigger Script</h3><p>A pre-written automation that executes without LLM cost when its trigger condition is met.</p></div>
+            <div class="term"><h3>Token Budget</h3><p>The maximum tokens allocated for a specific purpose (per heartbeat, per holon, per task). Enables resource-aware operation and cost control.</p></div>
+            <div class="term"><h3>Trigger Script</h3><p>A pre-defined automation that executes without AI reasoning cost when its condition is met. Enables efficient handling of routine operations.</p></div>
 
             <hr>
             <h2>Taglines</h2>
-            <div class="term"><h3>"Agents with Agency"</h3><p>Holonic Agents actually have autonomy &mdash; they make decisions, manage resources, and develop over time.</p></div>
-            <div class="term"><h3>"AI wearing code like a body"</h3><p>The LLM is a reasoning engine; the Holon is the body it inhabits.</p></div>
-        </main>
+            <div class="term"><h3>"Agents with Agency"</h3><p>Holonic Agents have true autonomy &mdash; they make decisions, manage resources, develop over time, and pursue self-directed goals.</p></div>
+            <div class="term"><h3>"AI wearing code like a body"</h3><p>The AI model is a reasoning engine; the Holon is the body it inhabits, providing memory, identity, and capabilities.</p></div>
+</main>
     </div>
 </body>
 </html>

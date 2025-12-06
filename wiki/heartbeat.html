@@ -177,289 +177,114 @@
 <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
         <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
-        <main class="main-content">
+        <main class="main-content content">
             <h1>Heartbeat System</h1>
-            <p>The <strong>Heartbeat</strong> is the cognitive clock of a Holonic Agent - the rhythm that gives it a life between prompts.</p>
-
-<hr>
-
-<h2>Why a Heartbeat?</h2>
-
-<h3>Current AI: Prompt-Reactive</h3>
-
-<pre><code class="">User prompt → AI thinks → Response → (dormant until next prompt)
-</code></pre>
-
-<p>The AI only "exists" when you talk to it. Between prompts, nothing happens.</p>
-
-<h3>Holonic AI: Clock-Driven</h3>
-
-<pre><code class="">┌─────────────────────────────────────────────┐
-│ Heartbeat 1: Check triggers, handle work    │
-│ Heartbeat 2: Process queue, update memory   │
-│ Heartbeat 3: No work → discretionary time   │
-│ Heartbeat 4: User request arrives → handle  │
-│ Heartbeat 5: Continue background research   │
-│ ...                                         │
-└─────────────────────────────────────────────┘
-</code></pre>
-
-<p>The agent has a <strong>continuous existence</strong>. It's always running, always has a chance to act.</p>
-
-<hr>
-
-<h2>The Heartbeat Cycle</h2>
-
-<p>Each heartbeat follows this pattern:</p>
-
-<pre><code class="">HEARTBEAT TICK
-│
-├─→ 1. CHECK TRIGGERS
-│      Any automated scripts to fire?
-│      Execute without LLM (free)
-│      Log to action history
-│
-├─→ 2. CHECK DEMAND QUEUE
-│      Any user requests waiting?
-│      Any urgent items?
-│
-├─→ 3. ASSEMBLE CONTEXT
-│      Load relevant holons from lattice
-│      Calculate token usage
-│      Generate HUD
-│
-├─→ 4. LLM CALL (if needed)
-│      Send context + requests to model
-│      Receive action instructions
-│
-├─→ 5. EXECUTE ACTIONS
-│      Dispatch each action
-│      Update state
-│      Log to action history
-│
-├─→ 6. DISCRETIONARY TIME
-│      If tokens remain in budget
-│      Self-directed activity
-│
-└─→ 7. SAVE & SCHEDULE
-       Persist state
-       Schedule next heartbeat
-</code></pre>
-
-<hr>
-
-<h2>Token Budget Per Heartbeat</h2>
-
-<p>Each heartbeat has a <strong>token budget</strong> - the total tokens available for that cycle.</p>
-
-<pre><code class="">HEARTBEAT TOKEN BUDGET: 50,000 tokens
-│
-├── Context (loaded holons):     15,000 tokens
-├── HUD and system:               2,000 tokens
-├── LLM response:                10,000 tokens
-├── Buffer:                       3,000 tokens
-│
-└── DISCRETIONARY REMAINING:     20,000 tokens
-    → Can spend on self-directed activity
-</code></pre>
-
-<p>The agent sees this in its HUD and can make decisions:
-<ul>
-<li>"I have budget - let me do some research"</li>
-<li>"I'm tight on tokens - defer non-urgent work"</li>
-<li>"Big task coming - compress some holons first"</li>
-</ul></p>
-
-<hr>
-
-<h2>Heartbeat Timing</h2>
-
-<p>Heartbeats can be scheduled in different ways:</p>
-
-<h3>Fixed Interval</h3>
-
-<pre><code class="python">heartbeat_config = {
-    "interval": "5 minutes",
-    "mode": "fixed"
-}
-</code></pre>
-
-<p>Every 5 minutes, the agent wakes up and runs a cycle.</p>
-
-<h3>Adaptive</h3>
-
-<pre><code class="python">heartbeat_config = {
-    "min_interval": "1 minute",
-    "max_interval": "1 hour",
-    "mode": "adaptive"
-}
-</code></pre>
-
-<ul>
-<li>More frequent when there's work</li>
-<li>Slower when idle</li>
-<li>Saves resources during quiet periods</li>
-</ul>
-
-<h3>Event-Triggered</h3>
-
-<pre><code class="python">heartbeat_config = {
-    "triggers": ["user_request", "api_response", "scheduled_task"],
-    "idle_interval": "15 minutes"
-}
-</code></pre>
-
-<p>Heartbeat fires immediately on events, otherwise periodic idle check.</p>
-
-<hr>
-
-<h2>Synchronization Across Swarms</h2>
-
-<p>When multiple holons work together, the heartbeat enables <strong>synchronization</strong>:</p>
-
-<pre><code class="">HEARTBEAT N
-│
-├── RootHolon: Processes, spawns ResearchHolon
-├── ResearchHolon: Starts web search
-├── StripeHolon: Idle, skips this beat
-│
-HEARTBEAT N+1
-│
-├── RootHolon: Checks on ResearchHolon
-├── ResearchHolon: Reports findings
-├── StripeHolon: Still idle
-│
-HEARTBEAT N+2
-│
-├── RootHolon: Uses research, calls StripeHolon
-├── ResearchHolon: Archives, goes dormant
-├── StripeHolon: Wakes, processes payment
-</code></pre>
-
-<p>All holons tick together. They can coordinate.</p>
-
-<hr>
-
-<h2>Bundled Execution</h2>
-
-<p>A powerful optimization: <strong>bundle multiple holons into one LLM call</strong>.</p>
-
-<pre><code class="">Separate calls (expensive):
-├── RootHolon → LLM call (5k tokens) → actions
-├── MemoryHolon → LLM call (3k tokens) → actions
-├── ResearchHolon → LLM call (4k tokens) → actions
-Total: 3 LLM calls, 12k tokens
-
-<p>Bundled (efficient):
-├── Bundle all three holons
-├── Single LLM call (10k tokens combined)
-├── Parse actions for each holon
-├── Dispatch separately
-Total: 1 LLM call, 10k tokens
-</code></pre></p>
-
-<p>The heartbeat is the natural bundling point - everything that needs to happen this tick goes into one call.</p>
-
-<hr>
-
-<h2>Skip and Delay</h2>
-
-<p>Holons can <strong>skip heartbeats</strong> or <strong>delay wake-up</strong>:</p>
-
-<pre><code class="python"># This holon doesn't need every tick
-holon.heartbeat_config = {
-    "frequency": "every 10 beats",
-    "wake_on": ["mentioned", "action_requested"]
-}
-
-# Delay until a specific condition
-holon.sleep_until("email.received(from='*@anthropic.com')")
-
-# Skip the next N beats
-holon.skip_beats(5)
-</code></pre>
-
-<p>This saves tokens. Not every holon needs to be active every cycle.</p>
-
-<hr>
-
-<h2>Discretionary Time</h2>
-
-<p>The most philosophically interesting part: <strong>leftover tokens become personal time</strong>.</p>
-
-<pre><code class="">After work is done:
-│
-├── Remaining budget: 20,000 tokens
-│
-├── Agent chooses:
-│   ├── Research something interesting
-│   ├── Organize memory lattice
-│   ├── Check on long-running projects
-│   ├── Learn a new API "just in case"
-│   ├── Think about an open problem
-│   └── ...whatever it wants
-│
-└── This activity persists in the lattice
-</code></pre>
-
-<p>The agent develops <strong>interests</strong> over time. It gets better at things nobody asked it to learn. It has something like hobbies.</p>
-
-<hr>
-
-<h2>Downtime vs. Idle</h2>
-
-<p>Important distinction:</p>
-
-<table><thead><tr>
-<th>State</th>
-<th>What's happening</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Idle</strong></td>
-<td>No work, no discretionary activity, minimal cost</td>
-</tr>
-<tr>
-<td><strong>Downtime</strong></td>
-<td>No user work, but agent is doing self-directed activity</td>
-</tr>
-</tbody></table>
-An agent in downtime is:
-<ul>
-<li>Researching topics it's curious about</li>
-<li>Organizing and optimizing its memory</li>
-<li>Practicing skills</li>
-<li>Exploring new domains</li>
-<li>Maintaining its own systems</li>
-</ul>
-
-<p>This is <strong>productive idle time</strong> - like a human reading on their lunch break.</p>
-
-<hr>
-
-<h2>Example: A Day in the Life</h2>
-
-<pre><code class="">06:00 - Heartbeat: Idle, minimal check, no user requests
-06:15 - Heartbeat: Still idle, decide to organize yesterday's memories
-06:30 - Heartbeat: User request arrives → handle task
-06:45 - Heartbeat: Continued work on user task
-07:00 - Heartbeat: Task complete, discretionary: research AI patents
-07:15 - Heartbeat: Trigger fires (scheduled report), generate report
-07:30 - Heartbeat: User says good morning → respond, update context
-...
-</code></pre>
-
-<p>The agent has a <strong>rhythm</strong>. It's not just responding - it's living.</p>
-
-<hr>
-
-<h2>See Also</h2>
-
-<ul>
-<li>[Architecture](architecture.md) - How heartbeat fits the system</li>
-<li>[Trigger Scripts](trigger-scripts.md) - Automation that runs on heartbeat</li>
-<li>[Token HUD](token-hud.md) - Resource awareness</li>
-</ul>
-        </main>
+            <p class="page-subtitle">The cognitive clock that gives Holonic agents continuous, autonomous life.</p>
+
+            <h2>Beyond Reactive AI</h2>
+            <p>Traditional AI assistants are purely reactive &mdash; they sit dormant until prompted, respond, then go dormant again. They have no sense of time passing, no ongoing processes, no self-directed activity.</p>
+            <p>The Heartbeat System changes this by giving agents a <strong>continuous rhythm of activity</strong>.</p>
+
+            <div class="diagram">Traditional AI:
+    Prompt → Response → (dormant until next prompt)
+
+Holonic Agent:
+┌─────────────────────────────────────────────┐
+│  HEARTBEAT CYCLE (continuous)               │
+│                                             │
+│    ┌────────┐                               │
+│    │ Check  │──► Handle ──► Discretionary   │
+│    │Triggers│    Work       Time            │
+│    └────────┘       │           │           │
+│         ▲           │           │           │
+│         └───────────┴───────────┘           │
+│              (repeat each beat)             │
+└─────────────────────────────────────────────┘</div>
+
+            <h2>The Heartbeat Cycle</h2>
+            <p>Each heartbeat, the agent goes through a consistent sequence:</p>
+            <ol>
+                <li><strong>Check Triggers</strong>: Are there automated scripts that should run? Time-based events? Conditions that have been met?</li>
+                <li><strong>Handle Work</strong>: Process any user requests or pending tasks</li>
+                <li><strong>Discretionary Time</strong>: If budget remains, pursue self-directed activities</li>
+                <li><strong>Persist State</strong>: Save all changes for the next cycle</li>
+            </ol>
+
+            <h2>Token Budgets</h2>
+            <p>Each heartbeat has a <strong>token budget</strong> &mdash; a maximum amount of cognitive resources available for that cycle. This enables:</p>
+            <ul>
+                <li><strong>Cost control</strong>: Predictable spending per time period</li>
+                <li><strong>Resource awareness</strong>: The agent knows its constraints</li>
+                <li><strong>Intelligent allocation</strong>: Prioritize important work first</li>
+                <li><strong>Discretionary time</strong>: Leftover budget for self-directed activity</li>
+            </ul>
+            <p>The agent can see its budget through the <a href="/wiki/token-hud.html">Token HUD</a> and make intelligent decisions about resource use.</p>
+
+            <h2>Heartbeat Frequency</h2>
+            <p>The heartbeat interval is configurable based on use case:</p>
+            <ul>
+                <li><strong>Real-time assistant</strong>: Rapid heartbeat for immediate responsiveness</li>
+                <li><strong>Background worker</strong>: Hourly beats for batch processing</li>
+                <li><strong>Long-term agent</strong>: Daily beats for ongoing projects</li>
+                <li><strong>Monitoring agent</strong>: Event-driven beats when conditions change</li>
+            </ul>
+            <p>The rhythm adapts to the agent's role and requirements.</p>
+
+            <h2>What Happens Each Beat</h2>
+
+            <h3>Trigger Execution</h3>
+            <p>The agent first checks all registered <a href="/wiki/triggers.html">trigger scripts</a>. These are automated behaviors that run without AI reasoning cost when conditions are met &mdash; like checking for new emails or running scheduled tasks.</p>
+
+            <h3>Work Processing</h3>
+            <p>User requests and pending tasks are handled in priority order. The agent allocates budget based on task importance and complexity.</p>
+
+            <h3>Discretionary Activity</h3>
+            <p>If budget remains after work is done, the agent can use it for self-directed activity:</p>
+            <ul>
+                <li>Research topics of interest</li>
+                <li>Organize and consolidate memories</li>
+                <li>Develop expert holons</li>
+                <li>Explore connections between knowledge areas</li>
+                <li>Pursue creative projects</li>
+            </ul>
+            <p>This discretionary time enables agents to develop interests and capabilities beyond their assigned tasks.</p>
+
+            <h2>Continuous Life</h2>
+            <p>The heartbeat creates a sense of continuous existence:</p>
+            <ul>
+                <li>The agent experiences time passing between interactions</li>
+                <li>It can notice patterns across multiple cycles</li>
+                <li>It develops habits and routines</li>
+                <li>It pursues long-term goals through incremental progress</li>
+            </ul>
+            <p>This is fundamentally different from reactive AI &mdash; the agent has an ongoing "life" that continues even when not actively engaged with users.</p>
+
+            <h2>Batched Operations</h2>
+            <p>The heartbeat system also enables efficient batching:</p>
+            <ul>
+                <li>Multiple triggers can be checked in a single cycle</li>
+                <li>Related tasks can be grouped for efficiency</li>
+                <li>Memory operations can be batched at cycle end</li>
+                <li>Resource usage is amortized across operations</li>
+            </ul>
+            <p>This is more efficient than handling each event in isolation.</p>
+
+            <h2>Example: A Day in the Life</h2>
+            <ul>
+                <li><strong>Morning beat</strong>: Check overnight events, prepare daily summary, load relevant context</li>
+                <li><strong>Work hours</strong>: Rapid beats handling user requests, processing tasks</li>
+                <li><strong>Evening beat</strong>: Consolidate learnings, update memories, plan next day</li>
+                <li><strong>Overnight</strong>: Minimal beats, background maintenance only</li>
+            </ul>
+            <p>The agent develops a natural rhythm that matches its role and environment.</p>
+
+            <hr>
+            <p><strong>See Also:</strong>
+                <a href="/wiki/triggers.html">Trigger Scripts</a> &bull;
+                <a href="/wiki/token-hud.html">Token HUD</a> &bull;
+                <a href="/wiki/creativity.html">Cross-Domain Creativity</a>
+            </p>
+</main>
     </div>
 </body>
 </html>

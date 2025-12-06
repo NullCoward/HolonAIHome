@@ -206,17 +206,17 @@
             <p class="page-subtitle">A portable AI context capsule &mdash; the fundamental building block of the HolonicEngine.</p>
 
             <h2>The Core Metaphor</h2>
-            <blockquote><p>AI sitting on top of code like a body.</p></blockquote>
-            <p>The AI model (Claude, GPT, etc.) is a reasoning engine. The Holon is the body it wears:</p>
+            <blockquote><p>AI wearing code like a body.</p></blockquote>
+            <p>Today's AI models are powerful reasoning engines, but they're fundamentally stateless &mdash; each conversation starts fresh, with no memory of what came before. The Holon solves this by giving AI a persistent "body" to inhabit:</p>
             <ul>
-                <li>The body has capabilities (<strong>Actions</strong>)</li>
-                <li>The body has a current state (<strong>Self</strong>)</li>
-                <li>The body has an identity and purpose (<strong>Purpose</strong>)</li>
+                <li>The body has capabilities (<strong>Actions</strong>) &mdash; ways to affect the world</li>
+                <li>The body has a current state (<strong>Self</strong>) &mdash; memory and context</li>
+                <li>The body has an identity (<strong>Purpose</strong>) &mdash; who it is and how it behaves</li>
             </ul>
-            <p>The model is stateless. The Holon provides everything else.</p>
+            <p>The model provides the thinking. The Holon provides everything else.</p>
 
             <h2>The Three Components</h2>
-            <p>Every Holon has three integrated modules:</p>
+            <p>Every Holon integrates three essential modules that work together to create a complete agent identity:</p>
 
             <div class="diagram">┌─────────────────────────────────────────────┐
 │                   HOLON                     │
@@ -238,141 +238,99 @@
 │  ACTIONS                                    │
 │  ─────────────────────────────────────────  │
 │  • What can I do?                           │
-│  • Callback functions to real code          │
 │  • Interface to external world              │
+│  • Tools and capabilities available         │
 └─────────────────────────────────────────────┘</div>
 
             <h3>Purpose (The Interpretive Lens)</h3>
             <p><strong>HOW to interpret everything.</strong></p>
+            <p>Purpose defines the agent's identity and behavioral framework:</p>
             <ul>
-                <li>Behavioral goals and constraints</li>
+                <li>Goals, values, and constraints that guide decision-making</li>
                 <li>Personality and communication style</li>
-                <li>Heuristics and priorities</li>
-                <li>Model-routing guidance (which AI to use for what)</li>
+                <li>Priorities and heuristics for handling ambiguity</li>
+                <li>Guidance on when to use different capabilities</li>
             </ul>
-            <p>This is like a system prompt, but structured and part of the object.</p>
+            <p>Unlike a static system prompt, Purpose is structured, queryable, and can evolve as the agent learns.</p>
 
             <h3>Self / State (The Current Context)</h3>
-            <p><strong>WHAT to interpret.</strong></p>
+            <p><strong>WHAT the agent knows and remembers.</strong></p>
+            <p>Self contains everything that makes this agent unique at this moment:</p>
             <ul>
                 <li>Dynamic values that change over time</li>
-                <li>Memory and knowledge</li>
-                <li>Historical logs and action history</li>
-                <li>Nested child holons</li>
-                <li>Arbitrary data bindings</li>
+                <li>Accumulated knowledge and memories</li>
+                <li>Historical logs of actions and decisions</li>
+                <li>Nested child holons for specialized domains</li>
+                <li>Relationships and context about users and projects</li>
             </ul>
-            <p>This is the Holon's "working memory" plus persistent storage.</p>
+            <p>This is the Holon's persistent memory &mdash; it survives across sessions and grows over time.</p>
 
             <h3>Actions (The Capabilities)</h3>
-            <p><strong>WHAT can be done.</strong></p>
+            <p><strong>WHAT the agent can do in the world.</strong></p>
+            <p>Actions are the agent's interface to reality:</p>
             <ul>
-                <li>Callable functions with structured parameters</li>
-                <li>Each action has a name, description, and implementation</li>
-                <li>Actions can modify the Holon's Self</li>
-                <li>Actions can spawn or modify other Holons</li>
-                <li>Actions connect to external APIs and systems</li>
+                <li>Each action has a clear purpose and defined parameters</li>
+                <li>Actions can modify the agent's own state and memory</li>
+                <li>Actions can create or modify other Holons</li>
+                <li>Actions connect to external systems, APIs, and services</li>
+                <li>The agent chooses which actions to invoke based on context</li>
             </ul>
 
-            <h2>How It Works</h2>
+            <h2>The Execution Cycle</h2>
+            <p>The HolonicEngine operates through a continuous cycle that brings the agent to life:</p>
             <ol>
-                <li><strong>Serialization</strong>: The Holon converts itself to JSON/text</li>
-                <li><strong>AI Call</strong>: The serialized Holon is sent to the AI model</li>
-                <li><strong>Response</strong>: The AI returns structured action requests</li>
-                <li><strong>Dispatch</strong>: The engine executes the requested actions</li>
-                <li><strong>State Update</strong>: Actions modify the Holon's state</li>
-                <li><strong>Repeat</strong>: On next heartbeat, the cycle continues</li>
+                <li><strong>Context Assembly</strong>: The Holon's current state is prepared for the AI</li>
+                <li><strong>Reasoning</strong>: The AI model processes the context and decides on actions</li>
+                <li><strong>Action Dispatch</strong>: Requested actions are executed in the real world</li>
+                <li><strong>State Update</strong>: Results flow back and update the Holon's memory</li>
+                <li><strong>Persistence</strong>: Changes are saved for future sessions</li>
             </ol>
-
-<pre><code># Simplified execution loop
-holon_json = holon.serialize()
-ai_response = llm.call(holon_json + user_message)
-actions = parse_actions(ai_response)
-for action in actions:
-    holon.dispatch(action.name, **action.params)</code></pre>
+            <p>This cycle runs continuously on each <a href="/wiki/heartbeat.html">heartbeat</a>, giving the agent an ongoing "life" rather than isolated interactions.</p>
 
             <h2>Key Properties</h2>
 
             <h3>Portable</h3>
-            <p>Holons are just data. They can be:</p>
+            <p>Holons are pure data structures that can be:</p>
             <ul>
-                <li>Saved to disk</li>
-                <li>Sent over a network</li>
-                <li>Stored in any database</li>
-                <li>Moved between systems</li>
+                <li>Saved to disk and restored later</li>
+                <li>Sent over a network to run elsewhere</li>
+                <li>Stored in any database system</li>
+                <li>Moved between different AI models seamlessly</li>
             </ul>
-            <p>The AI model is stateless. The Holon carries all context.</p>
+            <p>Because the AI model is stateless, you can switch providers without losing the agent's identity, memory, or capabilities. This is <strong>portable cognition</strong>.</p>
 
             <h3>Composable</h3>
-            <p>Holons can contain other Holons. A Holon's Self can include:</p>
+            <p>Holons can contain other Holons, enabling sophisticated architectures:</p>
             <ul>
-                <li>Child holons for sub-tasks</li>
-                <li>Specialist holons for different domains</li>
-                <li>Memory holons for different contexts</li>
+                <li><strong>Child holons</strong> for delegated sub-tasks</li>
+                <li><strong>Specialist holons</strong> with deep domain expertise</li>
+                <li><strong>Memory holons</strong> organizing different knowledge areas</li>
+                <li><strong>Expert holons</strong> that the agent teaches itself about specific topics</li>
             </ul>
-            <p>This creates a <strong>lattice</strong> structure, not just a flat list.</p>
+            <p>This creates a <a href="/wiki/memory-lattice.html">lattice structure</a> &mdash; a rich, navigable web of knowledge rather than a flat list.</p>
 
-            <h3>Responsive</h3>
-            <p>Holons aren't just data stores &mdash; they're <strong>conversational</strong>.</p>
-            <p>You can query a Holon:</p>
-<pre><code>Me: "Hey PatentHolon, what's the current status?"
-PatentHolon: "Provisional filed. Utility filing due in 10 months.
-              Pranay quoted $8k. Waiting on your decision."</code></pre>
-            <p>This is like internal dialogue &mdash; consulting parts of your own mind.</p>
+            <h3>Conversational</h3>
+            <p>Holons aren't just data stores &mdash; they're <strong>responsive entities</strong>.</p>
+            <p>The agent can query its own holons like consulting parts of its own mind. Ask a specialist holon about its domain, and it responds with relevant knowledge and context. This enables a form of internal dialogue where the agent leverages its accumulated expertise.</p>
 
             <h3>Self-Aware</h3>
-            <p>Each Holon knows:</p>
+            <p>Each Holon maintains awareness of its own resource usage:</p>
             <ul>
-                <li>Its current token count</li>
-                <li>Its token budget/limit</li>
-                <li>Its usage patterns over time</li>
+                <li>Current size and token footprint</li>
+                <li>Budget limits and allocation</li>
+                <li>Usage patterns over time</li>
+                <li>Optimization opportunities</li>
             </ul>
-            <p>It can make decisions based on resource constraints.</p>
-
-            <h2>Example</h2>
-<pre><code>from holonic_engine import Holon
-
-# Create a holon
-assistant = Holon(name="Assistant")
-
-# Add purpose
-assistant.add_purpose("You are a helpful research assistant")
-assistant.add_purpose("Always cite sources")
-assistant.add_purpose("Be concise")
-
-# Add state
-assistant.add_self({"topic": "HolonicEngine patent strategy"})
-assistant.add_self({"memories": []})
-
-# Add actions
-@assistant.action
-def remember(key: str, value: str):
-    """Store something in memory."""
-    assistant.self_state.memories.append({key: value})
-
-@assistant.action
-def spawn_researcher(topic: str):
-    """Create a specialist holon for a research topic."""
-    child = Holon(name=f"Researcher_{topic}")
-    child.add_purpose(f"Research everything about {topic}")
-    assistant.add_self(child, key=f"researcher_{topic}")
-    return child
-
-# Execute
-result = assistant.execute("What should I research first?")</code></pre>
+            <p>This enables intelligent decisions about memory management &mdash; knowing when to summarize, archive, or expand knowledge.</p>
 
             <h2>The Name "Holon"</h2>
             <p>The term comes from Arthur Koestler's 1967 book <em>The Ghost in the Machine</em>.</p>
             <p>A holon is something that is simultaneously:</p>
             <ul>
-                <li>A <strong>whole</strong> unto itself</li>
-                <li>A <strong>part</strong> of a larger system</li>
+                <li>A <strong>whole</strong> unto itself &mdash; complete and functional</li>
+                <li>A <strong>part</strong> of a larger system &mdash; contributing to something greater</li>
             </ul>
-            <p>This captures the recursive, composable nature of the architecture:</p>
-            <ul>
-                <li>Each Holon is complete and functional on its own</li>
-                <li>Each Holon can be part of a larger Holon structure</li>
-                <li>The same patterns apply at every level of nesting</li>
-            </ul>
+            <p>This captures the recursive, composable nature of the architecture. Like cells in a body or departments in an organization, holons are autonomous units that combine to form greater wholes.</p>
 
             <hr>
             <p><strong>See Also:</strong>
@@ -380,7 +338,7 @@ result = assistant.execute("What should I research first?")</code></pre>
                 <a href="/wiki/architecture.html">Architecture</a> &bull;
                 <a href="/wiki/token-hud.html">Token HUD</a>
             </p>
-        </main>
+</main>
     </div>
 </body>
 </html>
