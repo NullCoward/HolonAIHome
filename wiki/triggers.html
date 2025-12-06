@@ -209,123 +209,94 @@
         <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
         <main class="main-content content">
             <h1>Trigger Scripts</h1>
-            <p class="page-subtitle">Zero-cost automations that extend agent behavior without consuming reasoning budget.</p>
+            <p class="page-subtitle">How AI develops habits and handles routine automatically.</p>
 
-            <h2>The Automation Layer</h2>
-            <p>Not every agent behavior needs AI reasoning. Many actions are routine, predictable, and can be automated. <strong>Trigger Scripts</strong> are pre-defined automations that run without consuming the agent's token budget.</p>
-            <p>Think of triggers like habits &mdash; learned behaviors that execute automatically when certain conditions are met, freeing up conscious attention for more complex tasks.</p>
+            <h2>Not Everything Needs Thinking</h2>
+            <p>When you catch a ball thrown at you, you don't consciously calculate trajectory. When you drive a familiar route, you don't think about every turn. Your brain has automated these patterns through practice.</p>
+            <p>Trigger Scripts bring this same ability to AI.</p>
 
-            <h2>Trigger vs. Reasoning</h2>
-            <p>Every event the agent handles falls into one of two categories:</p>
+            <h2>What Are Triggers?</h2>
+            <p>Triggers are automated responses to specific situations. When a condition is met, the AI acts without needing to "think" about it:</p>
 
             <div class="diagram">┌─────────────────────────────────────────────────┐
-│  EVENT HANDLING                                 │
-├──────────────────────┬──────────────────────────┤
-│  TRIGGERS            │  REASONING               │
-│  (Zero token cost)   │  (Uses AI budget)        │
-├──────────────────────┼──────────────────────────┤
-│  • Predictable       │  • Novel situations      │
-│  • Rule-based        │  • Requires judgment     │
-│  • High-frequency    │  • Complex decisions     │
-│  • Routine tasks     │  • Creative responses    │
-└──────────────────────┴──────────────────────────┘</div>
+│                  TRIGGER                        │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│   WHEN:  [Condition is met]                     │
+│                                                 │
+│   THEN:  [Action happens automatically]         │
+│                                                 │
+└─────────────────────────────────────────────────┘
 
-            <p>By handling routine events with triggers, the agent preserves its reasoning budget for situations that truly need it.</p>
+Examples:
+• Email from VIP arrives → Immediately notify user
+• 9 AM Monday → Prepare weekly briefing
+• Project deadline approaching → Send reminder
+• Error detected → Alert and log</div>
 
             <h2>Types of Triggers</h2>
 
-            <h3>Event Triggers</h3>
-            <p>Fire when specific external events occur:</p>
+            <h3>Event-Based</h3>
+            <p>Something happens in the world:</p>
             <ul>
-                <li>Email received from specific sender</li>
-                <li>Message arrives in monitored channel</li>
-                <li>File changes in watched directory</li>
-                <li>API webhook received</li>
+                <li>New email or message arrives</li>
+                <li>A file changes</li>
+                <li>An external system sends an alert</li>
             </ul>
 
-            <h3>Schedule Triggers</h3>
-            <p>Fire at specified times or intervals:</p>
+            <h3>Time-Based</h3>
+            <p>A specific time arrives:</p>
             <ul>
-                <li>Daily morning briefing</li>
-                <li>Weekly status report</li>
-                <li>Hourly system check</li>
-                <li>End-of-month summary</li>
+                <li>Daily morning preparation</li>
+                <li>Weekly status reports</li>
+                <li>Monthly summaries</li>
             </ul>
 
-            <h3>Condition Triggers</h3>
-            <p>Fire when internal conditions are met:</p>
+            <h3>Condition-Based</h3>
+            <p>An internal state changes:</p>
             <ul>
-                <li>Token budget falls below threshold</li>
-                <li>Memory usage exceeds limit</li>
-                <li>Task has been pending too long</li>
-                <li>Error count exceeds threshold</li>
+                <li>Memory getting full → Summarize old content</li>
+                <li>Task stuck too long → Escalate</li>
+                <li>Pattern detected → Take action</li>
             </ul>
 
-            <h3>Manual Triggers</h3>
-            <p>Invoked by user command or other explicit action:</p>
-            <ul>
-                <li>User requests specific workflow</li>
-                <li>Scheduled task completion</li>
-                <li>System maintenance commands</li>
-            </ul>
-
-            <h2>Trigger Actions</h2>
-            <p>When a trigger fires, it can execute a variety of actions:</p>
-            <ul>
-                <li>Modify the agent's state</li>
-                <li>Send notifications</li>
-                <li>Update external systems</li>
-                <li>Queue tasks for later processing</li>
-                <li>Log events for analysis</li>
-                <li>Escalate to AI reasoning if needed</li>
-            </ul>
-
-            <h2>The Action History</h2>
-            <p>All trigger executions are logged in the agent's action history. On each heartbeat, the agent sees what happened since its last reasoning cycle:</p>
-            <ul>
-                <li>Which triggers fired and why</li>
-                <li>What actions were taken automatically</li>
-                <li>Any events that need attention</li>
-                <li>Resource usage from automated actions</li>
-            </ul>
-            <p>This gives the agent awareness of automated activity without having to process each event individually.</p>
-
-            <h2>Compiled Cognition</h2>
-            <p>One of the most powerful aspects of triggers is <strong>compiled cognition</strong> &mdash; the ability to convert repeated reasoning patterns into automated triggers.</p>
-            <p>When the agent notices it's making the same decision repeatedly, it can:</p>
+            <h2>Learning Habits</h2>
+            <p>The most powerful aspect: the AI can <strong>teach itself new habits</strong>.</p>
+            <p>When the AI notices it's doing the same thing repeatedly, it can:</p>
             <ol>
                 <li>Recognize the pattern</li>
                 <li>Create a trigger to handle it automatically</li>
-                <li>Free up reasoning budget for novel situations</li>
+                <li>Free up attention for new challenges</li>
             </ol>
-            <p>This is analogous to how humans develop habits &mdash; conscious decisions that become automatic through repetition.</p>
+            <p>Over time, routine work becomes habitual, and the AI's conscious attention stays focused on what truly matters.</p>
 
-            <h2>Example Workflows</h2>
+            <h2>Why This Matters</h2>
 
-            <h3>Email Triage</h3>
-            <p>Triggers handle routine emails automatically: acknowledgments, forwarding to appropriate holons, flagging for priority. Only unusual emails escalate to AI reasoning.</p>
+            <h3>Efficiency</h3>
+            <p>Automated responses are faster and cheaper than thinking through every situation from scratch.</p>
 
-            <h3>System Monitoring</h3>
-            <p>Triggers watch for error conditions, resource limits, and anomalies. Normal operation is handled silently; exceptions trigger alerts or reasoning cycles.</p>
+            <h3>Reliability</h3>
+            <p>Habits don't forget. If something should happen every Monday at 9 AM, it will.</p>
 
-            <h3>Knowledge Maintenance</h3>
-            <p>Scheduled triggers maintain the memory lattice: summarizing old memories, archiving stale information, updating expert holons with new patterns.</p>
+            <h3>Growth</h3>
+            <p>As more routines become automatic, the AI has more capacity for complex, novel challenges. It gets better at the routine stuff so it can focus on the interesting stuff.</p>
 
             <h2>The Two Spheres</h2>
-            <p>Triggers create a natural division of agent activity:</p>
+            <p>Triggers create a natural division:</p>
             <ul>
-                <li><strong>Automated Sphere</strong>: High-volume, routine, zero-cost operations</li>
-                <li><strong>Demand Sphere</strong>: Novel, complex, reasoning-intensive work</li>
+                <li><strong>Automatic Sphere:</strong> Routine, predictable, handled by triggers</li>
+                <li><strong>Conscious Sphere:</strong> Novel, complex, requiring real thought</li>
             </ul>
-            <p>Effective agents maximize the automated sphere, reserving reasoning power for situations that truly require intelligence.</p>
+            <p>The goal is to expand the automatic sphere over time, freeing consciousness for what it does best: handling the unexpected and the creative.</p>
 
             <hr>
-            <p><strong>See Also:</strong>
+            <p><strong>Learn More:</strong>
                 <a href="/wiki/heartbeat.html">Heartbeat System</a> &bull;
                 <a href="/wiki/token-hud.html">Token HUD</a> &bull;
                 <a href="/wiki/architecture.html">Architecture</a>
             </p>
-            <div class="wiki-footer">
+
+                        <div class="wiki-footer">
                 <p>Architecture Patent Pending &bull; &copy; 2024 <a href="/">Holonic AGI</a></p>
             </div>
 

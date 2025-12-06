@@ -209,124 +209,89 @@
         <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
         <main class="main-content content">
             <h1>Architecture</h1>
-            <p class="page-subtitle">How the HolonicEngine creates agents with persistent memory, self-awareness, and autonomous behavior.</p>
+            <p class="page-subtitle">How the HolonicEngine creates AI that remembers, grows, and acts autonomously.</p>
 
-            <h2>The Problem with Current AI</h2>
-            <p>Today's AI assistants have a fundamental limitation: <strong>they forget everything</strong>.</p>
-            <p>Each conversation is isolated. The AI has no memory of previous interactions, no accumulated knowledge, no sense of ongoing projects or relationships. It's like talking to someone with complete amnesia every single time.</p>
-
-            <div class="diagram">Traditional AI Architecture:
-┌────────────────────────────────────────────────────────┐
-│  User: "Remember the project we discussed yesterday?"  │
-│  AI:   "I don't have access to previous conversations" │
-│                                                        │
-│  Every interaction starts from zero.                   │
-│  No memory. No context. No continuity.                 │
-└────────────────────────────────────────────────────────┘</div>
-
-            <h2>The HolonicEngine Solution</h2>
-            <p>The HolonicEngine solves this by separating <strong>reasoning</strong> from <strong>memory</strong>:</p>
+            <h2>The Fundamental Shift</h2>
+            <p>Today's AI assistants are <strong>stateless</strong>. Ask them a question, get an answer, and everything is forgotten. It's like talking to someone with no past and no future &mdash; just an eternal present.</p>
+            <p>The HolonicEngine changes this by separating <em>thinking</em> from <em>being</em>:</p>
             <ul>
-                <li>The AI model provides the reasoning (thinking, language, decision-making)</li>
-                <li>The Holon provides everything else (memory, identity, capabilities, context)</li>
+                <li><strong>The AI model</strong> (Claude, GPT, etc.) provides the thinking &mdash; reasoning, language, creativity</li>
+                <li><strong>The Holon</strong> provides the being &mdash; memory, identity, continuity</li>
             </ul>
-            <p>The model is stateless. The Holon is persistent.</p>
+            <p>The model is like the brain's ability to think. The Holon is like everything else that makes you <em>you</em>.</p>
 
-            <div class="diagram">HolonicEngine Architecture:
-┌─────────────────────────────────────────────────┐
-│             HOLONIC AGENT                       │
+            <h2>A Mind That Persists</h2>
+            <p>In the HolonicEngine, an AI's entire sense of self exists independently from any particular conversation or session. This means:</p>
+            <ul>
+                <li><strong>Conversations build on each other</strong> &mdash; The AI remembers what you discussed last week</li>
+                <li><strong>Knowledge accumulates</strong> &mdash; The AI gets smarter about your specific needs over time</li>
+                <li><strong>Relationships deepen</strong> &mdash; The AI understands you better the more you interact</li>
+                <li><strong>Growth is permanent</strong> &mdash; What the AI learns today, it keeps forever</li>
+            </ul>
+
+            <h2>Model Independence</h2>
+            <p>Because the AI's identity lives in the Holon, not the language model, you can switch models without losing the AI's self:</p>
+            <ul>
+                <li>Upgrade to newer, better models as they're released</li>
+                <li>Use different models for different tasks</li>
+                <li>Move between providers without starting over</li>
+            </ul>
+            <p>The AI's memories, personality, and accumulated knowledge travel with it. It's truly <strong>portable intelligence</strong>.</p>
+
+            <h2>Living Architecture</h2>
+            <p>Unlike reactive assistants that only respond when prompted, Holonic agents have an ongoing life:</p>
+
+            <div class="diagram">┌─────────────────────────────────────────────────┐
+│           THE HOLONIC LIFE CYCLE                │
 ├─────────────────────────────────────────────────┤
-│  ┌─────────────┐    ┌─────────────────────────┐ │
-│  │  AI MODEL   │◄──►│        HOLON            │ │
-│  │ (Reasoning) │    │  • Purpose (Identity)   │ │
-│  │             │    │  • Self (Memory)        │ │
-│  │  Stateless  │    │  • Actions (Abilities)  │ │
-│  └─────────────┘    │                         │ │
-│                     │      Persistent         │ │
-│                     └─────────────────────────┘ │
+│                                                 │
+│   ┌─────────┐    ┌─────────┐    ┌─────────┐    │
+│   │  WAKE   │───▶│  WORK   │───▶│  GROW   │    │
+│   │         │    │         │    │         │    │
+│   │ Check   │    │ Handle  │    │ Learn,  │    │
+│   │ what's  │    │ tasks & │    │ explore │    │
+│   │ pending │    │ requests│    │ improve │    │
+│   └─────────┘    └─────────┘    └─────────┘    │
+│        ▲                              │         │
+│        └──────────────────────────────┘         │
+│                (continuous cycle)               │
 └─────────────────────────────────────────────────┘</div>
 
-            <h2>Model Agnosticism</h2>
-            <p>Because state lives in the Holon, not the model, HolonicEngine agents are <strong>model-agnostic</strong>:</p>
-            <ul>
-                <li>Switch between Claude, GPT, or any other provider</li>
-                <li>Use different models for different tasks (fast model for simple queries, powerful model for complex reasoning)</li>
-                <li>Upgrade to newer models without losing agent memory or identity</li>
-                <li>Mix models within the same agent architecture</li>
-            </ul>
-            <p>The agent's personality, knowledge, and capabilities remain constant regardless of which AI is currently "wearing" the Holon.</p>
-
-            <h2>The Memory Hierarchy</h2>
-            <p>HolonicEngine organizes knowledge into a hierarchical lattice structure:</p>
-
-            <div class="diagram">Memory Organization:
-                    ┌─────────────┐
-                    │  Root Agent │
-                    │  (Core Self)│
-                    └──────┬──────┘
-           ┌───────────────┼───────────────┐
-           ▼               ▼               ▼
-    ┌──────────┐    ┌──────────┐    ┌──────────┐
-    │  Work    │    │ Personal │    │  Expert  │
-    │ Projects │    │ Context  │    │ Domains  │
-    └────┬─────┘    └──────────┘    └────┬─────┘
-         │                               │
-    ┌────┴────┐                    ┌─────┴─────┐
-    ▼         ▼                    ▼           ▼
-┌───────┐ ┌───────┐          ┌────────┐  ┌────────┐
-│Project│ │Project│          │ API    │  │Finance │
-│  A    │ │  B    │          │ Expert │  │ Expert │
-└───────┘ └───────┘          └────────┘  └────────┘</div>
-
-            <p>This structure enables:</p>
-            <ul>
-                <li><strong>Selective Loading</strong>: Only relevant knowledge is loaded for each task</li>
-                <li><strong>Efficient Storage</strong>: Large knowledge bases without overwhelming context</li>
-                <li><strong>Natural Organization</strong>: Knowledge grouped by domain and relevance</li>
-                <li><strong>Growth Over Time</strong>: The lattice expands as the agent learns</li>
-            </ul>
-
-            <h2>The Heartbeat Cycle</h2>
-            <p>Unlike reactive chatbots that only respond when prompted, Holonic agents have a continuous "heartbeat" &mdash; a regular rhythm of activity:</p>
+            <p>Each cycle, the agent:</p>
             <ol>
-                <li><strong>Check Triggers</strong>: Are there automated tasks to run?</li>
-                <li><strong>Handle Work</strong>: Process user requests and tasks</li>
-                <li><strong>Discretionary Time</strong>: Use remaining budget for self-directed activity</li>
-                <li><strong>Persist State</strong>: Save all changes for next cycle</li>
+                <li>Checks for things that need attention</li>
+                <li>Handles work and user requests</li>
+                <li>Uses remaining time for self-directed growth</li>
             </ol>
-            <p>This gives agents an ongoing "life" with self-directed goals, not just reactive responses.</p>
+            <p>This creates AI that doesn't just respond to you &mdash; it has its own ongoing existence.</p>
 
-            <h2>Resource Awareness</h2>
-            <p>Holonic agents are aware of their own resource usage through the <a href="/wiki/token-hud.html">Token HUD</a>:</p>
+            <h2>Self-Aware Intelligence</h2>
+            <p>Holonic agents know about themselves. They understand:</p>
             <ul>
-                <li>They know their token budget and current usage</li>
-                <li>They can make decisions about when to summarize or expand memory</li>
-                <li>They balance thoroughness against efficiency</li>
-                <li>They optimize their own cognitive footprint over time</li>
+                <li>How much they currently remember</li>
+                <li>What they're good at and what they're learning</li>
+                <li>How their resources are being used</li>
+                <li>When to summarize memories and when to keep details</li>
             </ul>
-            <p>This self-awareness enables agents to manage their own resources intelligently, rather than blindly consuming tokens.</p>
+            <p>This self-awareness enables them to manage themselves intelligently, rather than blindly consuming resources until they hit limits.</p>
 
-            <h2>Key Architectural Benefits</h2>
-
-            <h3>Persistent Identity</h3>
-            <p>Agents maintain consistent personality, values, and communication style across all interactions. They remember who they are.</p>
-
-            <h3>Accumulated Knowledge</h3>
-            <p>Every interaction adds to the agent's understanding. Knowledge compounds over time, making the agent more capable.</p>
-
-            <h3>Autonomous Behavior</h3>
-            <p>Through triggers and discretionary time, agents can take initiative &mdash; checking on tasks, organizing knowledge, pursuing self-directed learning.</p>
-
-            <h3>Scalable Complexity</h3>
-            <p>The lattice structure allows agents to develop deep expertise in many domains without overwhelming any single context.</p>
+            <h2>What This Enables</h2>
+            <p>The HolonicEngine architecture makes possible:</p>
+            <ul>
+                <li><strong>AI assistants that know you</strong> &mdash; Not just your current question, but your whole context</li>
+                <li><strong>AI that develops expertise</strong> &mdash; Through actual experience, not just training</li>
+                <li><strong>AI that takes initiative</strong> &mdash; Acting on your behalf even when you're not there</li>
+                <li><strong>AI that grows with you</strong> &mdash; Becoming more valuable over months and years</li>
+            </ul>
 
             <hr>
-            <p><strong>See Also:</strong>
+            <p><strong>Learn More:</strong>
                 <a href="/wiki/holon.html">What is a Holon?</a> &bull;
                 <a href="/wiki/memory-lattice.html">Memory Lattice</a> &bull;
                 <a href="/wiki/heartbeat.html">Heartbeat System</a>
             </p>
-            <div class="wiki-footer">
+
+                        <div class="wiki-footer">
                 <p>Architecture Patent Pending &bull; &copy; 2024 <a href="/">Holonic AGI</a></p>
             </div>
 
