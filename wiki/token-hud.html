@@ -4,26 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Token HUD - HolonicEngine Wiki</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg-void: #0a0a0f; --bg-surface: rgba(15, 15, 25, 0.8); --foam-1: #00ffcc; --foam-2: #00d4ff; --text-primary: rgba(255, 255, 255, 0.95); --text-secondary: rgba(255, 255, 255, 0.7); --text-muted: rgba(255, 255, 255, 0.4); --border-subtle: rgba(255, 255, 255, 0.08); }
+        :root {
+            --bg-void: #0a0a0f;
+            --bg-surface: rgba(15, 15, 25, 0.8);
+            --bg-elevated: rgba(20, 20, 35, 0.9);
+            --foam-1: #00ffcc;
+            --foam-2: #00d4ff;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 212, 255, 0.3);
+        }
         body { background: var(--bg-void); min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text-primary); line-height: 1.6; }
-        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
+        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(0, 100, 150, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
         .wiki-container { position: relative; z-index: 10; display: flex; min-height: 100vh; }
-        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0; position: fixed; height: 100vh; backdrop-filter: blur(20px); }
+        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0 5rem 0; position: fixed; height: 100vh; overflow-y: auto; backdrop-filter: blur(20px); }
         .sidebar-header { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; }
         .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
         .sidebar-logo-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--foam-1), var(--foam-2)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--bg-void); }
         .sidebar-logo-text { font-size: 1.1rem; font-weight: 600; }
         .sidebar-tagline { margin-top: 0.5rem; font-size: 0.8rem; color: var(--foam-2); font-style: italic; }
         .nav-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; }
-        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; }
+        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; transition: all 0.2s; }
         .nav-link:hover { color: var(--text-primary); background: rgba(0, 212, 255, 0.05); border-left-color: var(--foam-2); }
-        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: absolute; bottom: 0; left: 0; right: 0; background: var(--bg-surface); }
-        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem; max-width: 900px; }
-        h1 { font-size: 2.5rem; font-weight: 300; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .coming-soon { margin-top: 2rem; padding: 2rem; background: rgba(0, 212, 255, 0.05); border: 1px solid var(--border-subtle); border-radius: 12px; text-align: center; }
-        .coming-soon p { color: var(--text-muted); }
+        .nav-link.active { color: var(--foam-2); background: rgba(0, 212, 255, 0.08); border-left-color: var(--foam-2); }
+        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: fixed; bottom: 0; left: 0; width: 280px; background: var(--bg-surface); backdrop-filter: blur(20px); }
+        .back-link:hover { color: var(--text-secondary); }
+        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem 4rem; max-width: 900px; }
+        h1 { font-size: 2.5rem; font-weight: 300; margin-bottom: 2rem; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        h2 { font-size: 1.5rem; font-weight: 500; margin: 2.5rem 0 1rem; color: var(--text-primary); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-subtle); }
+        h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--foam-1); }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        em { color: var(--foam-2); font-style: italic; }
+        ul, ol { margin: 1rem 0; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+        pre { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+        code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; color: var(--foam-2); }
+        pre code { color: var(--text-secondary); }
+        blockquote { border-left: 3px solid var(--foam-2); padding: 1rem 1.5rem; margin: 1.5rem 0; background: rgba(0, 212, 255, 0.05); border-radius: 0 8px 8px 0; }
+        blockquote p { margin: 0; color: var(--text-primary); font-size: 1.1rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+        th { color: var(--foam-1); font-weight: 600; background: var(--bg-elevated); }
+        td { color: var(--text-secondary); }
+        hr { border: none; border-top: 1px solid var(--border-subtle); margin: 2rem 0; }
+        a { color: var(--foam-2); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 900px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding-bottom: 1rem; }
+            .main-content { margin-left: 0; padding: 2rem 1.5rem; }
+            .back-link { position: relative; width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -31,29 +67,373 @@
     <div class="wiki-container">
         <nav class="sidebar">
             <div class="sidebar-header">
-                <a href="/wiki/" class="sidebar-logo"><div class="sidebar-logo-icon">H</div><span class="sidebar-logo-text">HolonicEngine</span></a>
+                <a href="/wiki/" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">H</div>
+                    <span class="sidebar-logo-text">HolonicEngine</span>
+                </a>
                 <div class="sidebar-tagline">Agents with Agency</div>
             </div>
             <div class="nav-section">Core Concepts</div>
             <a href="/wiki/" class="nav-link">Overview</a>
-            <a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
-            <a href="/wiki/architecture.html" class="nav-link">Architecture</a>
-            <a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
+<a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
+<a href="/wiki/architecture.html" class="nav-link">Architecture</a>
+<a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
             <div class="nav-section">Systems</div>
             <a href="/wiki/heartbeat.html" class="nav-link">Heartbeat System</a>
-            <a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
-            <a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
+<a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
+<a href="/wiki/token-hud.html" class="nav-link active">Token HUD</a>
             <div class="nav-section">Vision</div>
             <a href="/wiki/creativity.html" class="nav-link">Cross-Domain Creativity</a>
-            <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
-            <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
+<a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
+        <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
         <main class="main-content">
             <h1>Token HUD</h1>
-            <div class="coming-soon">
-                <p>Full documentation coming soon.</p>
-                <p style="margin-top: 1rem; color: var(--foam-2);">Check out the <a href="/wiki/holon.html" style="color: var(--foam-1);">What is a Holon?</a> page for core concepts.</p>
-            </div>
+            <p>The <strong>Token HUD</strong> (Heads-Up Display) gives Holonic Agents awareness of their own resource usage - the ability to see and manage their cognitive budget.</p>
+
+<hr>
+
+<h2>The Problem</h2>
+
+<p>Current AI agents have no idea:
+<ul>
+<li>How many tokens they're using</li>
+<li>How close they are to limits</li>
+<li>What's expensive vs. cheap</li>
+<li>How to economize</li>
+</ul></p>
+
+<p>They're like workers who can't see their own timesheet.</p>
+
+<hr>
+
+<h2>The HUD</h2>
+
+<p>Every Holonic Agent sees a resource display:</p>
+
+<pre><code class="">┌─────────────────────────────────────────────────┐
+│  TOKEN HUD                                      │
+│  ───────────────────────────────────────────    │
+│  Heartbeat Budget:  50,000 tokens               │
+│  Currently Used:    18,247 tokens               │
+│  Remaining:         31,753 tokens               │
+│  Status:            ████████░░░░ 36% used       │
+│                                                 │
+│  BREAKDOWN                                      │
+│  ├── Context (loaded holons):  12,400 tokens    │
+│  ├── System/HUD:                2,100 tokens    │
+│  ├── Action history:            1,800 tokens    │
+│  └── This response (est):       1,947 tokens    │
+│                                                 │
+│  USAGE TREND (last 10 beats)                    │
+│  Avg per beat:     22,450 tokens                │
+│  Peak:             41,200 tokens                │
+│  Low:               8,100 tokens                │
+│                                                 │
+│  AVAILABLE ACTIONS                              │
+│  • Compress history → save ~3,000 tokens        │
+│  • Unload StripeHolon → save ~2,400 tokens      │
+│  • Skip next heartbeat → defer work             │
+│  • Request budget increase                      │
+└─────────────────────────────────────────────────┘
+</code></pre>
+
+<hr>
+
+<h2>What the Agent Can See</h2>
+
+<h3>Current State</h3>
+
+<pre><code class="python">hud = {
+    "budget": 50000,
+    "used": 18247,
+    "remaining": 31753,
+    "percentage": 36.5,
+
+<p>"breakdown": {
+        "context": 12400,
+        "system": 2100,
+        "history": 1800,
+        "estimated_response": 1947
+    }
+}
+</code></pre></p>
+
+<h3>Historical Patterns</h3>
+
+<pre><code class="python">hud["history"] = {
+    "avg_per_beat": 22450,
+    "peak_beat": 41200,
+    "low_beat": 8100,
+    "trend": "stable",  # or "increasing", "decreasing"
+    "last_10": [18200, 22100, 19800, ...]
+}
+</code></pre>
+
+<h3>Per-Holon Costs</h3>
+
+<pre><code class="python">hud["holons"] = [
+    {"name": "root", "tokens": 3200, "loaded": True},
+    {"name": "memory_main", "tokens": 4100, "loaded": True},
+    {"name": "stripe_expert", "tokens": 2400, "loaded": True},
+    {"name": "research_archive", "tokens": 8500, "loaded": False},
+    ...
+]
+</code></pre>
+
+<hr>
+
+<h2>Resource-Aware Decisions</h2>
+
+<p>With the HUD, the agent can make intelligent tradeoffs:</p>
+
+<h3>"I'm Running Hot"</h3>
+
+<pre><code class="">HUD shows: 85% budget used, large task incoming
+
+<p>Agent thinks: "I need more room. Let me compress some history
+and unload the Stripe holon - I don't need it for this task."</p>
+
+<p>Actions:
+<ul>
+<li>history.compress(keep_last=5)</li>
+<li>stripe_holon.unload()</li>
+<li>Now at 52% budget, room to work</li>
+</code></pre>
+</ul></p>
+
+<h3>"I Have Spare Capacity"</h3>
+
+<pre><code class="">HUD shows: 25% budget used, no pending work
+
+<p>Agent thinks: "I have tokens to spare. Let me do some research
+on that topic I was curious about yesterday."</p>
+
+<p>Actions:
+<ul>
+<li>curiosity_queue.pop() → "quantum computing basics"</li>
+<li>research_holon.explore("quantum computing")</li>
+<li>memory.store(findings)</li>
+</code></pre>
+</ul></p>
+
+<h3>"This Task is Too Big"</h3>
+
+<pre><code class="">HUD shows: Task requires estimated 60,000 tokens, budget is 50,000
+
+<p>Agent thinks: "Can't do this in one beat. Let me break it down."</p>
+
+<p>Actions:
+<ul>
+<li>task.decompose() → [subtask1, subtask2, subtask3]</li>
+<li>subtask1.execute()  # This beat</li>
+<li>subtask2.schedule(next_beat)</li>
+<li>subtask3.schedule(beat_after_next)</li>
+</code></pre>
+</ul></p>
+
+<hr>
+
+<h2>Token Management Actions</h2>
+
+<p>The agent has actions specifically for resource management:</p>
+
+<h3>Compression</h3>
+
+<pre><code class="python">@holon.action
+def compress_history(keep_last: int = 10):
+    """Summarize old action history to save tokens."""
+    old_entries = action_history[:-keep_last]
+    summary = summarize(old_entries)
+    action_history = [summary] + action_history[-keep_last:]
+    return f"Compressed {len(old_entries)} entries, saved ~{tokens_saved} tokens"
+</code></pre>
+
+<h3>Unloading</h3>
+
+<pre><code class="python">@holon.action
+def unload_holon(name: str):
+    """Remove a holon from active context (still in lattice)."""
+    holon = loaded_holons.pop(name)
+    holon.save_to_lattice()
+    return f"Unloaded {name}, saved ~{holon.token_count} tokens"
+</code></pre>
+
+<h3>Deferral</h3>
+
+<pre><code class="python">@holon.action
+def defer_to_next_beat(task: str):
+    """Push a task to the next heartbeat."""
+    next_beat_queue.append(task)
+    return f"Deferred '{task}' to next beat"
+</code></pre>
+
+<h3>Spawning Helpers</h3>
+
+<pre><code class="python">@holon.action
+def spawn_for_subtask(task: str, budget: int):
+    """Create a child holon with its own budget for a subtask."""
+    child = Holon(
+        purpose=f"Handle: {task}",
+        token_budget=budget
+    )
+    child.execute()
+    return child.result
+</code></pre>
+
+<hr>
+
+<h2>Token Budgets as Currency</h2>
+
+<p>The HUD enables a powerful concept: <strong>tokens as cognitive currency</strong>.</p>
+
+<h3>Budget Allocation</h3>
+
+<pre><code class="python">root_holon.budget = 50000  # Total per heartbeat
+
+# Allocate to children
+work_budget = 30000       # For actual tasks
+automation_budget = 5000  # For trigger scripts
+discretionary = 15000     # For self-directed activity
+</code></pre>
+
+<h3>Negotiation</h3>
+
+<p>Holons can <strong>request</strong> more budget:</p>
+
+<pre><code class="python">@holon.action
+def request_budget_increase(reason: str, amount: int):
+    """Ask parent for more tokens."""
+    parent = get_parent_holon()
+    if parent.can_allocate(amount):
+        self.budget += amount
+        parent.budget -= amount
+        return f"Granted {amount} additional tokens"
+    else:
+        return "Request denied - insufficient parent budget"
+</code></pre>
+
+<h3>Competition</h3>
+
+<p>In a swarm, holons compete for resources:</p>
+
+<pre><code class="">Available: 100,000 tokens
+├── WorkerHolon1: "I need 30k for this analysis"
+├── WorkerHolon2: "I need 25k for data processing"
+├── ResearchHolon: "I'd like 20k for exploration"
+└── Coordinator: Allocates based on priority
+</code></pre>
+
+<hr>
+
+<h2>Self-Optimization</h2>
+
+<p>Over time, agents learn to optimize their token usage:</p>
+
+<h3>Pattern Recognition</h3>
+
+<pre><code class="">Agent notices: "I always load StripeHolon but rarely use it"
+Agent decides: "I'll unload it by default, load on demand"
+Result: Saves 2,400 tokens per beat on average
+</code></pre>
+
+<h3>Compression Strategies</h3>
+
+<pre><code class="">Agent notices: "My action history grows 500 tokens/beat"
+Agent decides: "I'll auto-compress when history &gt; 5,000 tokens"
+Result: Creates trigger script for automatic maintenance
+</code></pre>
+
+<h3>Predictive Loading</h3>
+
+<pre><code class="">Agent notices: "User usually asks about calendar on Monday mornings"
+Agent decides: "Pre-load calendar holon on Monday AM"
+Result: Faster response, better resource allocation
+</code></pre>
+
+<hr>
+
+<h2>The Desktop Metaphor</h2>
+
+<p>The HUD is like a computer's resource monitor:</p>
+
+<table><thead><tr>
+<th>Computer</th>
+<th>Holonic Agent</th>
+</tr></thead><tbody>
+<tr>
+<td>RAM usage</td>
+<td>Token usage</td>
+</tr>
+<tr>
+<td>CPU load</td>
+<td>LLM call frequency</td>
+</tr>
+<tr>
+<td>Disk space</td>
+<td>Lattice size</td>
+</tr>
+<tr>
+<td>Task Manager</td>
+<td>HUD</td>
+</tr>
+<tr>
+<td>Close apps to free memory</td>
+<td>Unload holons</td>
+</tr>
+<tr>
+<td>Defragment disk</td>
+<td>Optimize lattice</td>
+</tr>
+<tr>
+<td>Schedule tasks for low-load times</td>
+<td>Defer to future beats</td>
+</tr>
+</tbody></table>
+The agent manages its own resources like you manage your computer.
+
+<hr>
+
+<h2>Why This Matters Commercially</h2>
+
+<p>Token cost is the #1 problem in production AI:</p>
+
+<table><thead><tr>
+<th>Without HUD</th>
+<th>With HUD</th>
+</tr></thead><tbody>
+<tr>
+<td>Agents waste tokens</td>
+<td>Agents self-optimize</td>
+</tr>
+<tr>
+<td>External rate limiting</td>
+<td>Internal budget management</td>
+</tr>
+<tr>
+<td>Unpredictable costs</td>
+<td>Predictable, controlled costs</td>
+</tr>
+<tr>
+<td>No cost awareness</td>
+<td>Cost-aware decisions</td>
+</tr>
+<tr>
+<td>Human monitoring needed</td>
+<td>Self-managing</td>
+</tr>
+</tbody></table>
+An agent that manages its own costs is <strong>dramatically cheaper to run</strong>.
+
+<hr>
+
+<h2>See Also</h2>
+
+<ul>
+<li>[Heartbeat System](heartbeat-system.md) - When budgets refresh</li>
+<li>[Architecture](architecture.md) - How HUD fits the system</li>
+<li>[Memory Lattice](memory-lattice.md) - What can be loaded/unloaded</li>
+</ul>
         </main>
     </div>
 </body>

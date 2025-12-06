@@ -4,26 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Lattice - HolonicEngine Wiki</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg-void: #0a0a0f; --bg-surface: rgba(15, 15, 25, 0.8); --foam-1: #00ffcc; --foam-2: #00d4ff; --text-primary: rgba(255, 255, 255, 0.95); --text-secondary: rgba(255, 255, 255, 0.7); --text-muted: rgba(255, 255, 255, 0.4); --border-subtle: rgba(255, 255, 255, 0.08); }
+        :root {
+            --bg-void: #0a0a0f;
+            --bg-surface: rgba(15, 15, 25, 0.8);
+            --bg-elevated: rgba(20, 20, 35, 0.9);
+            --foam-1: #00ffcc;
+            --foam-2: #00d4ff;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 212, 255, 0.3);
+        }
         body { background: var(--bg-void); min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text-primary); line-height: 1.6; }
-        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
+        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(0, 100, 150, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
         .wiki-container { position: relative; z-index: 10; display: flex; min-height: 100vh; }
-        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0; position: fixed; height: 100vh; backdrop-filter: blur(20px); }
+        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0 5rem 0; position: fixed; height: 100vh; overflow-y: auto; backdrop-filter: blur(20px); }
         .sidebar-header { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; }
         .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
         .sidebar-logo-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--foam-1), var(--foam-2)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--bg-void); }
         .sidebar-logo-text { font-size: 1.1rem; font-weight: 600; }
         .sidebar-tagline { margin-top: 0.5rem; font-size: 0.8rem; color: var(--foam-2); font-style: italic; }
         .nav-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; }
-        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; }
+        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; transition: all 0.2s; }
         .nav-link:hover { color: var(--text-primary); background: rgba(0, 212, 255, 0.05); border-left-color: var(--foam-2); }
-        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: absolute; bottom: 0; left: 0; right: 0; background: var(--bg-surface); }
-        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem; max-width: 900px; }
-        h1 { font-size: 2.5rem; font-weight: 300; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .coming-soon { margin-top: 2rem; padding: 2rem; background: rgba(0, 212, 255, 0.05); border: 1px solid var(--border-subtle); border-radius: 12px; text-align: center; }
-        .coming-soon p { color: var(--text-muted); }
+        .nav-link.active { color: var(--foam-2); background: rgba(0, 212, 255, 0.08); border-left-color: var(--foam-2); }
+        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: fixed; bottom: 0; left: 0; width: 280px; background: var(--bg-surface); backdrop-filter: blur(20px); }
+        .back-link:hover { color: var(--text-secondary); }
+        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem 4rem; max-width: 900px; }
+        h1 { font-size: 2.5rem; font-weight: 300; margin-bottom: 2rem; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        h2 { font-size: 1.5rem; font-weight: 500; margin: 2.5rem 0 1rem; color: var(--text-primary); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-subtle); }
+        h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--foam-1); }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        em { color: var(--foam-2); font-style: italic; }
+        ul, ol { margin: 1rem 0; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+        pre { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+        code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; color: var(--foam-2); }
+        pre code { color: var(--text-secondary); }
+        blockquote { border-left: 3px solid var(--foam-2); padding: 1rem 1.5rem; margin: 1.5rem 0; background: rgba(0, 212, 255, 0.05); border-radius: 0 8px 8px 0; }
+        blockquote p { margin: 0; color: var(--text-primary); font-size: 1.1rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+        th { color: var(--foam-1); font-weight: 600; background: var(--bg-elevated); }
+        td { color: var(--text-secondary); }
+        hr { border: none; border-top: 1px solid var(--border-subtle); margin: 2rem 0; }
+        a { color: var(--foam-2); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 900px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding-bottom: 1rem; }
+            .main-content { margin-left: 0; padding: 2rem 1.5rem; }
+            .back-link { position: relative; width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -31,29 +67,319 @@
     <div class="wiki-container">
         <nav class="sidebar">
             <div class="sidebar-header">
-                <a href="/wiki/" class="sidebar-logo"><div class="sidebar-logo-icon">H</div><span class="sidebar-logo-text">HolonicEngine</span></a>
+                <a href="/wiki/" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">H</div>
+                    <span class="sidebar-logo-text">HolonicEngine</span>
+                </a>
                 <div class="sidebar-tagline">Agents with Agency</div>
             </div>
             <div class="nav-section">Core Concepts</div>
             <a href="/wiki/" class="nav-link">Overview</a>
-            <a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
-            <a href="/wiki/architecture.html" class="nav-link">Architecture</a>
-            <a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
+<a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
+<a href="/wiki/architecture.html" class="nav-link">Architecture</a>
+<a href="/wiki/memory-lattice.html" class="nav-link active">Memory Lattice</a>
             <div class="nav-section">Systems</div>
             <a href="/wiki/heartbeat.html" class="nav-link">Heartbeat System</a>
-            <a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
-            <a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
+<a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
+<a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
             <div class="nav-section">Vision</div>
             <a href="/wiki/creativity.html" class="nav-link">Cross-Domain Creativity</a>
-            <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
-            <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
+<a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
+        <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
         <main class="main-content">
             <h1>Memory Lattice</h1>
-            <div class="coming-soon">
-                <p>Full documentation coming soon.</p>
-                <p style="margin-top: 1rem; color: var(--foam-2);">Check out the <a href="/wiki/holon.html" style="color: var(--foam-1);">What is a Holon?</a> page for core concepts.</p>
-            </div>
+            <p>The <strong>Memory Lattice</strong> is how Holonic Agents organize knowledge - a navigable, hierarchical structure of holons that expands infinitely without hitting context limits.</p>
+
+<hr>
+
+<h2>The Problem with Current Memory</h2>
+
+<h3>Traditional Approaches</h3>
+
+<table><thead><tr>
+<th>Approach</th>
+<th>How it works</th>
+<th>The flaw</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Context window</strong></td>
+<td>Cram everything into the prompt</td>
+<td>Hits token limits</td>
+</tr>
+<tr>
+<td><strong>Summarization</strong></td>
+<td>Compress old content</td>
+<td>Loses fidelity</td>
+</tr>
+<tr>
+<td><strong>RAG</strong></td>
+<td>Retrieve relevant chunks</td>
+<td>Passive - AI doesn't control it</td>
+</tr>
+<tr>
+<td><strong>Vector DB</strong></td>
+<td>Semantic similarity search</td>
+<td>Chunks, not structure</td>
+</tr>
+</tbody></table>
+All of these treat memory as a <strong>tape</strong> - linear, compressed, externally managed.
+
+<h3>The Lattice Approach</h3>
+
+<p>Memory is a <strong>filesystem</strong>, not a tape.</p>
+
+<ul>
+<li>Knowledge exists whether or not it's loaded</li>
+<li>The AI navigates intentionally</li>
+<li>Summaries are doors, not replacements</li>
+<li>Structure is semantic and queryable</li>
+</ul>
+
+<hr>
+
+<h2>How It Works</h2>
+
+<h3>The Lattice Structure</h3>
+
+<pre><code class="">                    [Root Holon - "Me"]
+                           │
+          ┌────────────────┼────────────────┐
+          │                │                │
+    [Work Context]   [Personal]      [Projects]
+          │                │                │
+     ┌────┴────┐      ┌────┴────┐     ┌────┴────┐
+     │         │      │         │     │         │
+ [Client A] [Client B] ...       ... [HolonicEngine]
+     │                                     │
+  ┌──┴──┐                            ┌─────┴─────┐
+  │     │                            │           │
+[Proj1][Proj2]                   [Aaron]    [Patent]
+                                     │
+                                ┌────┴────┐
+                                │         │
+                           [Convos]  [Decisions]
+</code></pre>
+
+<p>Each node is a <strong>Holon</strong>:
+<ul>
+<li>Has its own Purpose, Self, Actions</li>
+<li>Can be queried (responsive)</li>
+<li>Contains summaries of its children</li>
+<li>Can expand to show more detail</li>
+</ul></p>
+
+<h3>Navigation, Not Retrieval</h3>
+
+<pre><code class="">Current task: "Follow up with Aaron about patent"
+
+<p>Step 1: Look at lattice → Projects/HolonicEngine seems relevant
+Step 2: Check HolonicEngine summary → "Patent work with Aaron Brindell"
+Step 3: Expand Aaron holon → See conversation history, decisions
+Step 4: Load specific memories needed for response
+Step 5: Respond with full context
+</code></pre></p>
+
+<p>The AI <strong>chooses</strong> what to load. It's not retrieved for it.</p>
+
+<hr>
+
+<h2>Interactive Summaries</h2>
+
+<p>A key innovation: summaries are <strong>doors</strong>, not destinations.</p>
+
+<h3>Traditional Summary</h3>
+
+<pre><code class="">"Aaron and I discussed patent strategy. He's working with a lawyer."
+</code></pre>
+
+<p>Flat. Lossy. Can't get more detail if you need it.</p>
+
+<h3>Interactive Summary (Holon)</h3>
+
+<pre><code class="">[Aaron Patent Discussions] - Summary Holon
+├── Summary: "Patent strategy with Pranay Pattani, $8k quoted"
+├── Child: [Pranay Research] - lawyer background info
+├── Child: [Cost Analysis] - 401k considerations
+├── Child: [Timeline] - provisional deadlines
+└── Child: [Decisions Made] - key choices
+
+<p>Query: "What did we decide about the $8k?"
+→ Expands [Decisions Made]
+→ Returns: "Aaron decided the $8k was worth it as an
+   investment in himself. He has $300k in 401k, so
+   the risk is manageable."
+</code></pre></p>
+
+<p>You can always drill deeper. Nothing is truly lost.</p>
+
+<hr>
+
+<h2>Self-Teaching Expert Holons</h2>
+
+<p>A powerful pattern: spawn a holon to <strong>become an expert</strong>.</p>
+
+<pre><code class="python"># Need to work with Stripe API
+stripe_expert = spawn_holon(
+    name="StripeExpert",
+    purpose="Learn everything about Stripe API. Become my interface to it."
+)
+
+# The holon teaches itself
+stripe_expert.research()  # Reads docs, tutorials, examples
+stripe_expert.practice()  # Makes test API calls
+stripe_expert.organize()  # Structures knowledge internally
+
+# Later, when you need Stripe
+result = stripe_expert.execute("Create a $50 payment link")
+# → Handles all API details internally
+</code></pre>
+
+<p>The expert holon lives in your lattice permanently. You never have to re-learn Stripe - you just ask your expert.</p>
+
+<hr>
+
+<h2>Internal Dialogue</h2>
+
+<p>Holons are <strong>responsive</strong> - you can talk to them.</p>
+
+<p>This enables internal dialogue, like humans have:</p>
+
+<pre><code class="">Me: "PatentHolon, what's the status?"
+
+<p>PatentHolon: "Provisional filed December 2024.
+You have 10 months to file utility. Pranay
+quoted $8k. Key inventions: externalized
+cognition, token budgeting, heartbeat scheduling."</p>
+
+<p>Me: "What should I prioritize?"</p>
+
+<p>PatentHolon: "Based on our analysis, the
+'externalized cognition' claim is strongest -
+hardest to route around. I'd lead with that."
+</code></pre></p>
+
+<p>This is consulting <strong>parts of your own mind</strong> that have specialized knowledge.</p>
+
+<hr>
+
+<h2>Context Window Efficiency</h2>
+
+<p>The lattice solves the context limit problem:</p>
+
+<h3>Without Lattice (Current AI)</h3>
+
+<pre><code class="">Context window: 100k tokens
+Conversation history: 80k tokens (compressed from 500k)
+Room for response: 20k tokens
+
+<p>Problem: Old context is lossy. Important details lost.
+</code></pre></p>
+
+<h3>With Lattice</h3>
+
+<pre><code class="">Context window: 100k tokens
+Currently loaded:
+  - Root holon summary: 2k
+  - Relevant project holon: 5k
+  - Specific memory holons: 10k
+  - HUD and actions: 3k
+Total: 20k tokens
+
+<p>Room for response: 80k tokens</p>
+
+<p>Everything else: Exists in lattice, loadable on demand
+</code></pre></p>
+
+<p>The total memory is <strong>unbounded</strong>. Only what's relevant is loaded.</p>
+
+<hr>
+
+<h2>Lattice Operations</h2>
+
+<h3>Growing the Lattice</h3>
+
+<pre><code class="python"># Create new memory
+memory = holon.spawn_child(
+    name="TodaysInsight",
+    purpose="Store insight about cross-domain creativity",
+    content="AI with hobbies develops unexpected expertise..."
+)
+
+# Place it in the lattice
+holon.self_state.insights.add(memory)
+</code></pre>
+
+<h3>Navigating the Lattice</h3>
+
+<pre><code class="python"># Find relevant holons
+matches = lattice.search("patent strategy")
+
+# Get summary without loading full content
+summary = matches[0].summarize()
+
+# Expand if needed
+if needs_more_detail(summary):
+    full = matches[0].expand()
+</code></pre>
+
+<h3>Pruning the Lattice</h3>
+
+<pre><code class="python"># Old, irrelevant holons can be archived
+old_project = lattice.find("OldProject2019")
+old_project.archive()  # Moves to cold storage
+
+# Or merged
+similar = lattice.find_similar("MonthlyReports")
+merged = Holon.merge(similar, name="ReportsArchive")
+</code></pre>
+
+<hr>
+
+<h2>How Human Memory Works</h2>
+
+<p>The lattice mirrors how human memory actually functions:</p>
+
+<table><thead><tr>
+<th>Human Memory</th>
+<th>Lattice Equivalent</th>
+</tr></thead><tbody>
+<tr>
+<td>"I know that guy"</td>
+<td>Summary holon</td>
+</tr>
+<tr>
+<td>Focus → recall details</td>
+<td>Expand holon</td>
+</tr>
+<tr>
+<td>Expertise in a domain</td>
+<td>Specialist holon</td>
+</tr>
+<tr>
+<td>"It's on the tip of my tongue"</td>
+<td>Search, partial match</td>
+</tr>
+<tr>
+<td>Forgetting (graceful degradation)</td>
+<td>Archive, prune</td>
+</tr>
+<tr>
+<td>Free association</td>
+<td>Cross-lattice links</td>
+</tr>
+</tbody></table>
+The AI isn't doing "retrieval" - it's <strong>remembering</strong> the way you do.
+
+<hr>
+
+<h2>See Also</h2>
+
+<ul>
+<li>[Holons](holons.md) - The fundamental building block</li>
+<li>[Token HUD](token-hud.md) - Managing what's loaded</li>
+<li>[Vision: Creativity](vision-creativity.md) - Cross-domain connections</li>
+</ul>
         </main>
     </div>
 </body>

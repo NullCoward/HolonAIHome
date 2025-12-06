@@ -4,26 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Architecture - HolonicEngine Wiki</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg-void: #0a0a0f; --bg-surface: rgba(15, 15, 25, 0.8); --foam-1: #00ffcc; --foam-2: #00d4ff; --text-primary: rgba(255, 255, 255, 0.95); --text-secondary: rgba(255, 255, 255, 0.7); --text-muted: rgba(255, 255, 255, 0.4); --border-subtle: rgba(255, 255, 255, 0.08); }
+        :root {
+            --bg-void: #0a0a0f;
+            --bg-surface: rgba(15, 15, 25, 0.8);
+            --bg-elevated: rgba(20, 20, 35, 0.9);
+            --foam-1: #00ffcc;
+            --foam-2: #00d4ff;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 212, 255, 0.3);
+        }
         body { background: var(--bg-void); min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text-primary); line-height: 1.6; }
-        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
+        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(0, 100, 150, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
         .wiki-container { position: relative; z-index: 10; display: flex; min-height: 100vh; }
-        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0; position: fixed; height: 100vh; backdrop-filter: blur(20px); }
+        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0 5rem 0; position: fixed; height: 100vh; overflow-y: auto; backdrop-filter: blur(20px); }
         .sidebar-header { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; }
         .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
         .sidebar-logo-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--foam-1), var(--foam-2)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--bg-void); }
         .sidebar-logo-text { font-size: 1.1rem; font-weight: 600; }
         .sidebar-tagline { margin-top: 0.5rem; font-size: 0.8rem; color: var(--foam-2); font-style: italic; }
         .nav-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; }
-        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; }
+        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; transition: all 0.2s; }
         .nav-link:hover { color: var(--text-primary); background: rgba(0, 212, 255, 0.05); border-left-color: var(--foam-2); }
-        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: absolute; bottom: 0; left: 0; right: 0; background: var(--bg-surface); }
-        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem; max-width: 900px; }
-        h1 { font-size: 2.5rem; font-weight: 300; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .coming-soon { margin-top: 2rem; padding: 2rem; background: rgba(0, 212, 255, 0.05); border: 1px solid var(--border-subtle); border-radius: 12px; text-align: center; }
-        .coming-soon p { color: var(--text-muted); }
+        .nav-link.active { color: var(--foam-2); background: rgba(0, 212, 255, 0.08); border-left-color: var(--foam-2); }
+        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: fixed; bottom: 0; left: 0; width: 280px; background: var(--bg-surface); backdrop-filter: blur(20px); }
+        .back-link:hover { color: var(--text-secondary); }
+        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem 4rem; max-width: 900px; }
+        h1 { font-size: 2.5rem; font-weight: 300; margin-bottom: 2rem; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        h2 { font-size: 1.5rem; font-weight: 500; margin: 2.5rem 0 1rem; color: var(--text-primary); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-subtle); }
+        h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--foam-1); }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        em { color: var(--foam-2); font-style: italic; }
+        ul, ol { margin: 1rem 0; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+        pre { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+        code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; color: var(--foam-2); }
+        pre code { color: var(--text-secondary); }
+        blockquote { border-left: 3px solid var(--foam-2); padding: 1rem 1.5rem; margin: 1.5rem 0; background: rgba(0, 212, 255, 0.05); border-radius: 0 8px 8px 0; }
+        blockquote p { margin: 0; color: var(--text-primary); font-size: 1.1rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+        th { color: var(--foam-1); font-weight: 600; background: var(--bg-elevated); }
+        td { color: var(--text-secondary); }
+        hr { border: none; border-top: 1px solid var(--border-subtle); margin: 2rem 0; }
+        a { color: var(--foam-2); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 900px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding-bottom: 1rem; }
+            .main-content { margin-left: 0; padding: 2rem 1.5rem; }
+            .back-link { position: relative; width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -31,29 +67,324 @@
     <div class="wiki-container">
         <nav class="sidebar">
             <div class="sidebar-header">
-                <a href="/wiki/" class="sidebar-logo"><div class="sidebar-logo-icon">H</div><span class="sidebar-logo-text">HolonicEngine</span></a>
+                <a href="/wiki/" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">H</div>
+                    <span class="sidebar-logo-text">HolonicEngine</span>
+                </a>
                 <div class="sidebar-tagline">Agents with Agency</div>
             </div>
             <div class="nav-section">Core Concepts</div>
             <a href="/wiki/" class="nav-link">Overview</a>
-            <a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
-            <a href="/wiki/architecture.html" class="nav-link">Architecture</a>
-            <a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
+<a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
+<a href="/wiki/architecture.html" class="nav-link active">Architecture</a>
+<a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
             <div class="nav-section">Systems</div>
             <a href="/wiki/heartbeat.html" class="nav-link">Heartbeat System</a>
-            <a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
-            <a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
+<a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
+<a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
             <div class="nav-section">Vision</div>
             <a href="/wiki/creativity.html" class="nav-link">Cross-Domain Creativity</a>
-            <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
-            <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
+<a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
+        <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
         <main class="main-content">
             <h1>Architecture</h1>
-            <div class="coming-soon">
-                <p>Full documentation coming soon.</p>
-                <p style="margin-top: 1rem; color: var(--foam-2);">Check out the <a href="/wiki/holon.html" style="color: var(--foam-1);">What is a Holon?</a> page for core concepts.</p>
-            </div>
+            <p>The HolonicEngine is a <strong>cognitive operating system</strong> - the full stack needed for AI that actually has autonomy.</p>
+
+<hr>
+
+<h2>The Stack</h2>
+
+<pre><code class="">┌────────────────────────────────────────────────────────┐
+│                    THE HOLONIC MIND                    │
+├────────────────────────────────────────────────────────┤
+│  HEARTBEAT (Life Rhythm)                               │
+│   • Token budget per cycle                             │
+│   • Allocate across: work / automation / self          │
+│   • The clock that drives everything                   │
+├────────────────────────────────────────────────────────┤
+│  CONSCIOUS REASONING (LLM Calls)                       │
+│   • Novel situations requiring thought                 │
+│   • Complex decisions                                  │
+│   • Script creation and repair                         │
+│   • Token-expensive, used sparingly                    │
+├────────────────────────────────────────────────────────┤
+│  AUTOMATIC SCRIPTS (Triggers)                          │
+│   • Pre-written responses to known patterns            │
+│   • Fire without invoking LLM (token-free)             │
+│   • Results logged to action history                   │
+│   • AI can observe and repair broken scripts           │
+├────────────────────────────────────────────────────────┤
+│  MEMORY LATTICE (Holons)                               │
+│   • Responsive holons (internal dialogue)              │
+│   • Self-teaching expert holons                        │
+│   • Hierarchical, navigable, expandable                │
+│   • Persistent - survives across sessions              │
+├────────────────────────────────────────────────────────┤
+│  EMBODIMENT (Actions)                                  │
+│   • Callback functions to real code                    │
+│   • API connections, file access, external systems     │
+│   • Feedback loop - actions return results             │
+│   • The interface between mind and world               │
+├────────────────────────────────────────────────────────┤
+│  DISCRETIONARY TIME                                    │
+│   • Leftover tokens after work is done                 │
+│   • Self-directed learning and research                │
+│   • Memory organization and maintenance                │
+│   • Curiosity, interests, "hobbies"                    │
+└────────────────────────────────────────────────────────┘
+</code></pre>
+
+<hr>
+
+<h2>How It Differs from Current Agents</h2>
+
+<h3>Current "Agent" Architecture</h3>
+
+<pre><code class="">User Prompt → LLM → Tool Calls → Response → (forgotten)
+</code></pre>
+
+<ul>
+<li>Agent only exists when prompted</li>
+<li>No persistent state between calls</li>
+<li>Memory is retrieval tricks (RAG, summarization)</li>
+<li>No awareness of resource usage</li>
+<li>No autonomous behavior</li>
+</ul>
+
+<h3>Holonic Agent Architecture</h3>
+
+<pre><code class="">┌─────────────────────────────────────────────────┐
+│                  HEARTBEAT TICK                 │
+├─────────────────────────────────────────────────┤
+│ 1. Check triggers (any automated responses?)    │
+│ 2. Check demand queue (any user requests?)      │
+│ 3. Load relevant holons from lattice            │
+│ 4. Serialize context + HUD to LLM               │
+│ 5. LLM returns actions                          │
+│ 6. Execute actions, update state                │
+│ 7. Log to action history                        │
+│ 8. Allocate remaining tokens to discretionary   │
+│ 9. Save state, wait for next heartbeat          │
+└─────────────────────────────────────────────────┘
+         ↓ (next heartbeat)
+    [repeat forever]
+</code></pre>
+
+<p>The agent is <strong>always running</strong>. It has a life rhythm.</p>
+
+<hr>
+
+<h2>Key Architectural Principles</h2>
+
+<h3>1. Model-Agnostic Cognition</h3>
+
+<p>The LLM is just a reasoning engine. Everything else lives outside:</p>
+
+<pre><code class="">┌─────────────────┐     ┌─────────────────┐
+│   Holon State   │────→│    LLM Call     │
+│   (Your Data)   │     │  (Stateless)    │
+│                 │←────│                 │
+└─────────────────┘     └─────────────────┘
+     Persistent              Ephemeral
+     Your Control            Provider's API
+     Any Storage             Any Model
+</code></pre>
+
+<p>Benefits:
+<ul>
+<li>Switch models without losing memory</li>
+<li>Data sovereignty (your data stays yours)</li>
+<li>No vendor lock-in</li>
+<li>Auditable - you can inspect everything</li>
+</ul></p>
+
+<h3>2. Token-Efficient Execution</h3>
+
+<p>LLM calls are expensive. The architecture minimizes them:</p>
+
+<table><thead><tr>
+<th>Operation</th>
+<th>LLM Needed?</th>
+<th>Cost</th>
+</tr></thead><tbody>
+<tr>
+<td>Trigger fires</td>
+<td>No</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>Script executes</td>
+<td>No</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>Action dispatches</td>
+<td>No</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>State updates</td>
+<td>No</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>Novel reasoning</td>
+<td>Yes</td>
+<td>Tokens</td>
+</tr>
+<tr>
+<td>Script creation</td>
+<td>Yes</td>
+<td>Tokens</td>
+</tr>
+</tbody></table>
+The goal: <strong>move as much as possible from conscious reasoning to automation</strong>.
+
+<h3>3. Hierarchical Context Management</h3>
+
+<p>Not everything needs to be in context at once:</p>
+
+<pre><code class="">Total Knowledge
+├── [Loaded into context this heartbeat]
+│   ├── Current task holons
+│   ├── Relevant memory holons
+│   └── HUD and action history
+│
+└── [Exists but not loaded]
+    ├── Other domain holons
+    ├── Historical archives
+    └── Dormant specialists
+</code></pre>
+
+<p>The AI <strong>navigates</strong> its memory, loading what's relevant.</p>
+
+<h3>4. Self-Modifying Structure</h3>
+
+<p>The agent can change itself:
+<ul>
+<li>Create new holons</li>
+<li>Destroy obsolete holons</li>
+<li>Write new trigger scripts</li>
+<li>Reorganize memory structure</li>
+<li>Adjust its own priorities</li>
+</ul></p>
+
+<p>This happens through normal Actions - no special mechanism needed.</p>
+
+<hr>
+
+<h2>The Execution Loop</h2>
+
+<h3>Per-Heartbeat Cycle</h3>
+
+<pre><code class="python">def heartbeat():
+    # 1. Check automated triggers
+    triggered_scripts = check_triggers()
+    for script in triggered_scripts:
+        results = execute_script(script)
+        log_to_action_history(script, results)
+
+# 2. Check demand queue (user requests)
+    pending_requests = get_demand_queue()
+
+# 3. Determine what context to load
+    relevant_holons = select_relevant_holons(pending_requests)
+
+# 4. Calculate token budget
+    used_tokens = sum(h.token_count for h in relevant_holons)
+    available_tokens = HEARTBEAT_TOKEN_BUDGET - used_tokens
+
+# 5. Serialize and call LLM
+    context = serialize_holons(relevant_holons)
+    hud = generate_hud(used_tokens, available_tokens)
+
+<p>response = llm.call(
+        purpose=root_holon.purpose,
+        context=context,
+        hud=hud,
+        requests=pending_requests
+    )</p>
+
+# 6. Parse and execute actions
+    actions = parse_actions(response)
+    for action in actions:
+        result = dispatch(action)
+        log_to_action_history(action, result)
+
+# 7. Discretionary time (if budget allows)
+    remaining = available_tokens - response.tokens_used
+    if remaining &gt; DISCRETIONARY_THRESHOLD:
+        discretionary_call(remaining)
+
+# 8. Save state
+    save_all_holons()
+
+# 9. Schedule next heartbeat
+    schedule_next_heartbeat()
+</code></pre>
+
+<hr>
+
+<h2>Component Interactions</h2>
+
+<pre><code class="">                    ┌─────────────┐
+                    │  HEARTBEAT  │
+                    │   CLOCK     │
+                    └──────┬──────┘
+                           │ tick
+           ┌───────────────┼───────────────┐
+           ▼               ▼               ▼
+    ┌────────────┐  ┌────────────┐  ┌────────────┐
+    │  TRIGGERS  │  │  DEMAND    │  │DISCRETION- │
+    │            │  │  QUEUE     │  │ARY TIME    │
+    └─────┬──────┘  └─────┬──────┘  └─────┬──────┘
+          │               │               │
+          └───────────────┼───────────────┘
+                          ▼
+                   ┌────────────┐
+                   │  CONTEXT   │
+                   │  ASSEMBLY  │
+                   └─────┬──────┘
+                         │
+              ┌──────────┴──────────┐
+              ▼                     ▼
+       ┌────────────┐        ┌────────────┐
+       │  MEMORY    │        │   TOKEN    │
+       │  LATTICE   │        │    HUD     │
+       └─────┬──────┘        └─────┬──────┘
+             │                     │
+             └──────────┬──────────┘
+                        ▼
+                 ┌────────────┐
+                 │    LLM     │
+                 │   CALL     │
+                 └─────┬──────┘
+                       │
+                       ▼
+                ┌────────────┐
+                │  ACTION    │
+                │  DISPATCH  │
+                └─────┬──────┘
+                      │
+          ┌───────────┼───────────┐
+          ▼           ▼           ▼
+    ┌──────────┐ ┌──────────┐ ┌──────────┐
+    │ EXTERNAL │ │  STATE   │ │ ACTION   │
+    │   APIs   │ │  UPDATE  │ │ HISTORY  │
+    └──────────┘ └──────────┘ └──────────┘
+</code></pre>
+
+<hr>
+
+<h2>See Also</h2>
+
+<ul>
+<li>[Holons](holons.md) - The fundamental building block</li>
+<li>[Heartbeat System](heartbeat-system.md) - Timing and scheduling</li>
+<li>[Trigger Scripts](trigger-scripts.md) - Automation layer</li>
+<li>[Memory Lattice](memory-lattice.md) - Knowledge organization</li>
+</ul>
         </main>
     </div>
 </body>

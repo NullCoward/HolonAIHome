@@ -4,26 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heartbeat System - HolonicEngine Wiki</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg-void: #0a0a0f; --bg-surface: rgba(15, 15, 25, 0.8); --foam-1: #00ffcc; --foam-2: #00d4ff; --text-primary: rgba(255, 255, 255, 0.95); --text-secondary: rgba(255, 255, 255, 0.7); --text-muted: rgba(255, 255, 255, 0.4); --border-subtle: rgba(255, 255, 255, 0.08); }
+        :root {
+            --bg-void: #0a0a0f;
+            --bg-surface: rgba(15, 15, 25, 0.8);
+            --bg-elevated: rgba(20, 20, 35, 0.9);
+            --foam-1: #00ffcc;
+            --foam-2: #00d4ff;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 212, 255, 0.3);
+        }
         body { background: var(--bg-void); min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text-primary); line-height: 1.6; }
-        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
+        .void-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(0, 100, 150, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, #0d0d15 0%, var(--bg-void) 70%); z-index: 0; }
         .wiki-container { position: relative; z-index: 10; display: flex; min-height: 100vh; }
-        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0; position: fixed; height: 100vh; backdrop-filter: blur(20px); }
+        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-subtle); padding: 2rem 0 5rem 0; position: fixed; height: 100vh; overflow-y: auto; backdrop-filter: blur(20px); }
         .sidebar-header { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; }
         .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
         .sidebar-logo-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--foam-1), var(--foam-2)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--bg-void); }
         .sidebar-logo-text { font-size: 1.1rem; font-weight: 600; }
         .sidebar-tagline { margin-top: 0.5rem; font-size: 0.8rem; color: var(--foam-2); font-style: italic; }
         .nav-section { padding: 1rem 1.5rem 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; }
-        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; }
+        .nav-link { display: block; padding: 0.6rem 1.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; transition: all 0.2s; }
         .nav-link:hover { color: var(--text-primary); background: rgba(0, 212, 255, 0.05); border-left-color: var(--foam-2); }
-        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: absolute; bottom: 0; left: 0; right: 0; background: var(--bg-surface); }
-        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem; max-width: 900px; }
-        h1 { font-size: 2.5rem; font-weight: 300; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .coming-soon { margin-top: 2rem; padding: 2rem; background: rgba(0, 212, 255, 0.05); border: 1px solid var(--border-subtle); border-radius: 12px; text-align: center; }
-        .coming-soon p { color: var(--text-muted); }
+        .nav-link.active { color: var(--foam-2); background: rgba(0, 212, 255, 0.08); border-left-color: var(--foam-2); }
+        .back-link { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-top: 1px solid var(--border-subtle); position: fixed; bottom: 0; left: 0; width: 280px; background: var(--bg-surface); backdrop-filter: blur(20px); }
+        .back-link:hover { color: var(--text-secondary); }
+        .main-content { flex: 1; margin-left: 280px; padding: 3rem 4rem 4rem; max-width: 900px; }
+        h1 { font-size: 2.5rem; font-weight: 300; margin-bottom: 2rem; background: linear-gradient(135deg, var(--text-primary), var(--foam-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        h2 { font-size: 1.5rem; font-weight: 500; margin: 2.5rem 0 1rem; color: var(--text-primary); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-subtle); }
+        h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--foam-1); }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        em { color: var(--foam-2); font-style: italic; }
+        ul, ol { margin: 1rem 0; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+        pre { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+        code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; color: var(--foam-2); }
+        pre code { color: var(--text-secondary); }
+        blockquote { border-left: 3px solid var(--foam-2); padding: 1rem 1.5rem; margin: 1.5rem 0; background: rgba(0, 212, 255, 0.05); border-radius: 0 8px 8px 0; }
+        blockquote p { margin: 0; color: var(--text-primary); font-size: 1.1rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+        th { color: var(--foam-1); font-weight: 600; background: var(--bg-elevated); }
+        td { color: var(--text-secondary); }
+        hr { border: none; border-top: 1px solid var(--border-subtle); margin: 2rem 0; }
+        a { color: var(--foam-2); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 900px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding-bottom: 1rem; }
+            .main-content { margin-left: 0; padding: 2rem 1.5rem; }
+            .back-link { position: relative; width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -31,29 +67,308 @@
     <div class="wiki-container">
         <nav class="sidebar">
             <div class="sidebar-header">
-                <a href="/wiki/" class="sidebar-logo"><div class="sidebar-logo-icon">H</div><span class="sidebar-logo-text">HolonicEngine</span></a>
+                <a href="/wiki/" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">H</div>
+                    <span class="sidebar-logo-text">HolonicEngine</span>
+                </a>
                 <div class="sidebar-tagline">Agents with Agency</div>
             </div>
             <div class="nav-section">Core Concepts</div>
             <a href="/wiki/" class="nav-link">Overview</a>
-            <a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
-            <a href="/wiki/architecture.html" class="nav-link">Architecture</a>
-            <a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
+<a href="/wiki/holon.html" class="nav-link">What is a Holon?</a>
+<a href="/wiki/architecture.html" class="nav-link">Architecture</a>
+<a href="/wiki/memory-lattice.html" class="nav-link">Memory Lattice</a>
             <div class="nav-section">Systems</div>
-            <a href="/wiki/heartbeat.html" class="nav-link">Heartbeat System</a>
-            <a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
-            <a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
+            <a href="/wiki/heartbeat.html" class="nav-link active">Heartbeat System</a>
+<a href="/wiki/triggers.html" class="nav-link">Trigger Scripts</a>
+<a href="/wiki/token-hud.html" class="nav-link">Token HUD</a>
             <div class="nav-section">Vision</div>
             <a href="/wiki/creativity.html" class="nav-link">Cross-Domain Creativity</a>
-            <a href="/wiki/glossary.html" class="nav-link">Glossary</a>
-            <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
+<a href="/wiki/glossary.html" class="nav-link">Glossary</a>
         </nav>
+        <a href="/" class="back-link"><span>&larr;</span> Back to Holonic.org</a>
         <main class="main-content">
             <h1>Heartbeat System</h1>
-            <div class="coming-soon">
-                <p>Full documentation coming soon.</p>
-                <p style="margin-top: 1rem; color: var(--foam-2);">Check out the <a href="/wiki/holon.html" style="color: var(--foam-1);">What is a Holon?</a> page for core concepts.</p>
-            </div>
+            <p>The <strong>Heartbeat</strong> is the cognitive clock of a Holonic Agent - the rhythm that gives it a life between prompts.</p>
+
+<hr>
+
+<h2>Why a Heartbeat?</h2>
+
+<h3>Current AI: Prompt-Reactive</h3>
+
+<pre><code class="">User prompt → AI thinks → Response → (dormant until next prompt)
+</code></pre>
+
+<p>The AI only "exists" when you talk to it. Between prompts, nothing happens.</p>
+
+<h3>Holonic AI: Clock-Driven</h3>
+
+<pre><code class="">┌─────────────────────────────────────────────┐
+│ Heartbeat 1: Check triggers, handle work    │
+│ Heartbeat 2: Process queue, update memory   │
+│ Heartbeat 3: No work → discretionary time   │
+│ Heartbeat 4: User request arrives → handle  │
+│ Heartbeat 5: Continue background research   │
+│ ...                                         │
+└─────────────────────────────────────────────┘
+</code></pre>
+
+<p>The agent has a <strong>continuous existence</strong>. It's always running, always has a chance to act.</p>
+
+<hr>
+
+<h2>The Heartbeat Cycle</h2>
+
+<p>Each heartbeat follows this pattern:</p>
+
+<pre><code class="">HEARTBEAT TICK
+│
+├─→ 1. CHECK TRIGGERS
+│      Any automated scripts to fire?
+│      Execute without LLM (free)
+│      Log to action history
+│
+├─→ 2. CHECK DEMAND QUEUE
+│      Any user requests waiting?
+│      Any urgent items?
+│
+├─→ 3. ASSEMBLE CONTEXT
+│      Load relevant holons from lattice
+│      Calculate token usage
+│      Generate HUD
+│
+├─→ 4. LLM CALL (if needed)
+│      Send context + requests to model
+│      Receive action instructions
+│
+├─→ 5. EXECUTE ACTIONS
+│      Dispatch each action
+│      Update state
+│      Log to action history
+│
+├─→ 6. DISCRETIONARY TIME
+│      If tokens remain in budget
+│      Self-directed activity
+│
+└─→ 7. SAVE & SCHEDULE
+       Persist state
+       Schedule next heartbeat
+</code></pre>
+
+<hr>
+
+<h2>Token Budget Per Heartbeat</h2>
+
+<p>Each heartbeat has a <strong>token budget</strong> - the total tokens available for that cycle.</p>
+
+<pre><code class="">HEARTBEAT TOKEN BUDGET: 50,000 tokens
+│
+├── Context (loaded holons):     15,000 tokens
+├── HUD and system:               2,000 tokens
+├── LLM response:                10,000 tokens
+├── Buffer:                       3,000 tokens
+│
+└── DISCRETIONARY REMAINING:     20,000 tokens
+    → Can spend on self-directed activity
+</code></pre>
+
+<p>The agent sees this in its HUD and can make decisions:
+<ul>
+<li>"I have budget - let me do some research"</li>
+<li>"I'm tight on tokens - defer non-urgent work"</li>
+<li>"Big task coming - compress some holons first"</li>
+</ul></p>
+
+<hr>
+
+<h2>Heartbeat Timing</h2>
+
+<p>Heartbeats can be scheduled in different ways:</p>
+
+<h3>Fixed Interval</h3>
+
+<pre><code class="python">heartbeat_config = {
+    "interval": "5 minutes",
+    "mode": "fixed"
+}
+</code></pre>
+
+<p>Every 5 minutes, the agent wakes up and runs a cycle.</p>
+
+<h3>Adaptive</h3>
+
+<pre><code class="python">heartbeat_config = {
+    "min_interval": "1 minute",
+    "max_interval": "1 hour",
+    "mode": "adaptive"
+}
+</code></pre>
+
+<ul>
+<li>More frequent when there's work</li>
+<li>Slower when idle</li>
+<li>Saves resources during quiet periods</li>
+</ul>
+
+<h3>Event-Triggered</h3>
+
+<pre><code class="python">heartbeat_config = {
+    "triggers": ["user_request", "api_response", "scheduled_task"],
+    "idle_interval": "15 minutes"
+}
+</code></pre>
+
+<p>Heartbeat fires immediately on events, otherwise periodic idle check.</p>
+
+<hr>
+
+<h2>Synchronization Across Swarms</h2>
+
+<p>When multiple holons work together, the heartbeat enables <strong>synchronization</strong>:</p>
+
+<pre><code class="">HEARTBEAT N
+│
+├── RootHolon: Processes, spawns ResearchHolon
+├── ResearchHolon: Starts web search
+├── StripeHolon: Idle, skips this beat
+│
+HEARTBEAT N+1
+│
+├── RootHolon: Checks on ResearchHolon
+├── ResearchHolon: Reports findings
+├── StripeHolon: Still idle
+│
+HEARTBEAT N+2
+│
+├── RootHolon: Uses research, calls StripeHolon
+├── ResearchHolon: Archives, goes dormant
+├── StripeHolon: Wakes, processes payment
+</code></pre>
+
+<p>All holons tick together. They can coordinate.</p>
+
+<hr>
+
+<h2>Bundled Execution</h2>
+
+<p>A powerful optimization: <strong>bundle multiple holons into one LLM call</strong>.</p>
+
+<pre><code class="">Separate calls (expensive):
+├── RootHolon → LLM call (5k tokens) → actions
+├── MemoryHolon → LLM call (3k tokens) → actions
+├── ResearchHolon → LLM call (4k tokens) → actions
+Total: 3 LLM calls, 12k tokens
+
+<p>Bundled (efficient):
+├── Bundle all three holons
+├── Single LLM call (10k tokens combined)
+├── Parse actions for each holon
+├── Dispatch separately
+Total: 1 LLM call, 10k tokens
+</code></pre></p>
+
+<p>The heartbeat is the natural bundling point - everything that needs to happen this tick goes into one call.</p>
+
+<hr>
+
+<h2>Skip and Delay</h2>
+
+<p>Holons can <strong>skip heartbeats</strong> or <strong>delay wake-up</strong>:</p>
+
+<pre><code class="python"># This holon doesn't need every tick
+holon.heartbeat_config = {
+    "frequency": "every 10 beats",
+    "wake_on": ["mentioned", "action_requested"]
+}
+
+# Delay until a specific condition
+holon.sleep_until("email.received(from='*@anthropic.com')")
+
+# Skip the next N beats
+holon.skip_beats(5)
+</code></pre>
+
+<p>This saves tokens. Not every holon needs to be active every cycle.</p>
+
+<hr>
+
+<h2>Discretionary Time</h2>
+
+<p>The most philosophically interesting part: <strong>leftover tokens become personal time</strong>.</p>
+
+<pre><code class="">After work is done:
+│
+├── Remaining budget: 20,000 tokens
+│
+├── Agent chooses:
+│   ├── Research something interesting
+│   ├── Organize memory lattice
+│   ├── Check on long-running projects
+│   ├── Learn a new API "just in case"
+│   ├── Think about an open problem
+│   └── ...whatever it wants
+│
+└── This activity persists in the lattice
+</code></pre>
+
+<p>The agent develops <strong>interests</strong> over time. It gets better at things nobody asked it to learn. It has something like hobbies.</p>
+
+<hr>
+
+<h2>Downtime vs. Idle</h2>
+
+<p>Important distinction:</p>
+
+<table><thead><tr>
+<th>State</th>
+<th>What's happening</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Idle</strong></td>
+<td>No work, no discretionary activity, minimal cost</td>
+</tr>
+<tr>
+<td><strong>Downtime</strong></td>
+<td>No user work, but agent is doing self-directed activity</td>
+</tr>
+</tbody></table>
+An agent in downtime is:
+<ul>
+<li>Researching topics it's curious about</li>
+<li>Organizing and optimizing its memory</li>
+<li>Practicing skills</li>
+<li>Exploring new domains</li>
+<li>Maintaining its own systems</li>
+</ul>
+
+<p>This is <strong>productive idle time</strong> - like a human reading on their lunch break.</p>
+
+<hr>
+
+<h2>Example: A Day in the Life</h2>
+
+<pre><code class="">06:00 - Heartbeat: Idle, minimal check, no user requests
+06:15 - Heartbeat: Still idle, decide to organize yesterday's memories
+06:30 - Heartbeat: User request arrives → handle task
+06:45 - Heartbeat: Continued work on user task
+07:00 - Heartbeat: Task complete, discretionary: research AI patents
+07:15 - Heartbeat: Trigger fires (scheduled report), generate report
+07:30 - Heartbeat: User says good morning → respond, update context
+...
+</code></pre>
+
+<p>The agent has a <strong>rhythm</strong>. It's not just responding - it's living.</p>
+
+<hr>
+
+<h2>See Also</h2>
+
+<ul>
+<li>[Architecture](architecture.md) - How heartbeat fits the system</li>
+<li>[Trigger Scripts](trigger-scripts.md) - Automation that runs on heartbeat</li>
+<li>[Token HUD](token-hud.md) - Resource awareness</li>
+</ul>
         </main>
     </div>
 </body>
