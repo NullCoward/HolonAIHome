@@ -473,6 +473,35 @@
         .origin strong {
             color: var(--text-secondary);
         }
+    
+        /* Patent Notice */
+        .patent-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 204, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 4px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--foam-2);
+            text-transform: uppercase;
+            margin-top: 0.75rem;
+        }
+
+        .wiki-footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .wiki-footer a {
+            color: var(--foam-2);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -511,6 +540,8 @@
         <main class="main-content content">
             <h1>HolonicEngine</h1>
             <p class="page-subtitle">A cognitive operating system for AI that actually has autonomy.</p>
+            <div class="patent-badge">Architecture Patent Pending</div>
+
 
             <h2>What is the HolonicEngine?</h2>
             <p>The HolonicEngine is an architecture for building AI agents that have:</p>
@@ -623,6 +654,10 @@
             <div class="origin">
                 <p>Created by <strong>Aaron Brindell</strong> (Portland, OR)</p>
                 <p>Provisional patent filed December 2024</p>
+            </div>
+
+            <div class="wiki-footer">
+                <p>Architecture Patent Pending &bull; &copy; 2024 <a href="/">Holonic AGI</a></p>
             </div>
         </main>
     </div>
